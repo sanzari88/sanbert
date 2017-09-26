@@ -23,9 +23,9 @@ import util.Util;
 import util.gui.FileBrowserUI;
 
 /*
- * Main.java - created on 26.10.2003
+ * Main.java - created on 27-09/17
  * 
- * @author Michaela Behling
+ * @author Raffaele Sanzari
  */
 
 public final class Main {
