@@ -1,0 +1,11 @@
+#-------- Programma di generazione automatico by Raffaele Sanzari --------#
+D0010 = 'abbbbbbbba';
+D0009 = 'bbbbbbbaaa';
+D0008 = 'bbbbbbaabb';
+D0007 = 'bbbbbaabbb';
+D0006 = 'bbbbaabbbb';
+D0005 = 'bbbaabbbbb';
+D0004 = 'baaabbbbbb';
+D0003 = 'babbbbbbbb';
+D0002 = 'bbbbbbbbbb';
+D0001 = 'baaaaaaaab';

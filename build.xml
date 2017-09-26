@@ -1,0 +1,29 @@
+<project name="JDraw1.3" default="run" basedir=".">
+   
+	<target name="run" depends="jar" >
+		<java fork="true" jar="${basedir}/jdraw.jar" />
+	</target>
+
+
+	<target name="jar" depends="build">
+		<jar destfile="${basedir}/jdraw.jar" 
+			  basedir="${basedir}/classes"
+			  manifest="${basedir}/manifest" />       
+	</target>	
+	
+	
+	<target name="build" >
+		<delete dir="${basedir}/classes" />
+		<mkdir dir="${basedir}/classes" />
+		<javac srcdir="${basedir}/util" destdir="${basedir}/classes" />
+		<javac srcdir="${basedir}/jdraw" destdir="${basedir}/classes" />
+		<copy todir="${basedir}/classes">
+    		<fileset dir="${basedir}" >
+    			<include name="**/*.png" />
+    			<include name="**/*.gif" />
+    			<include name="**/*.html" />
+    		</fileset>
+  		</copy>
+	</target>
+ 
+</project>

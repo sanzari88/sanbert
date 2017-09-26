@@ -1,0 +1,740 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>JDraw Help</title>
+  <meta name="author" content="Michaela Behling">
+	<link rel="stylesheet" type="text/css" href="jdomain.css" >
+</head>
+<body>
+<a name="top"> 	
+<table width="100%" cellpadding="0" cellspacing="0">	
+    <tr>
+		<td valign="top"><small>J-Domain, JDraw Help</small></td>
+      <td align="right"><img src="images/help.png"></td>
+	</tr>	
+</table></a>
+	 	
+	 	
+<h1>JDraw Help</h1>
+	 	
+<p>JDraw is a pixel oriented graphics editor and easy to use. This document
+will help you to find your way around.<br>
+The following sections explain JDraw's various features:</p>
+<!-- Index --> 	
+<ol>
+<li><a href="#supported"> Supported Image Formats</a></li>
+<li><a href="#main_window"> The Main Window</a></li>	 	
+<li><a href="#palette"> The Colour Palette</a></li>
+	<ul type="square">
+	<li><a href="#colours"> The Main Palette</a></li>
+	<li><a href="#gradient"> The Gradient Palette</a></li>
+	</ul>
+<li><a href="#menu"> The Menu</a></li>
+<li><a href="#toolbar"> The Toolbar</a></li>
+<ul type="square">
+	<li><a href="#menu_shortcuts"> Menu Shortcuts</a></li>
+	<li><a href="#tools"> Tools</a></li>
+	</ul>
+<li><a href="#settings">The Frame Settings Dialog</a></li>
+<li><a href="#keys"> Keyboard Shortcuts</a></li>
+</ol>
+
+<!-- Chapters --> 	 	 	 	
+
+<p>&nbsp;</p>
+<!-- Supported Formats --> 
+<a name="supported"><h2>1. Supported Image Formats</h2></a> 	
+<small><a href="#top">Top</a></small> 	 	
+
+<p>JDraw can read the following formats:</p>
+<ul>
+	<li>GIF - interlaced/not interlaced</li>
+	<li>ICO - Windows icons with up to 256 colours. XP's true colour icons are <b>not</b> 
+		supported yet.</li>
+	<li>JD - JDraw's own image format (serialized jdraw.data.Picture objects)</li>
+	<li>JPG</li>	
+	<li>PNG - interlaced/not interlaced</li>	
+</ul>
+
+<p>Images can be saved in the following formats:</p>
+<ul>
+	<li>GIF - interlaced/not interlaced</li>
+	<li>ICO - Windows icons with up to 256 colours. XP's true colour icons are <b>not</b> 
+		supported yet.</li>
+	<li>JD - this format is useful, if you usually save <a href="#compress">
+		compressed images</a>, but want to keep one version with full palettes.
+		Or maybe you're implementing exiting things based on Picture objects...</li>
+	<li>PNG - interlaced/not interlaced</li>
+</ul>
+
+To save a GIF or PNG interlaced, choose "Save As..." from the file menu,
+select the "GIF/PNG Images (Interlaced)" file filter and save your image.
+
+<p>&nbsp;</p>
+<!-- Main Window --> 
+<a name="main_window"><h2>2. The Main Window</h2></a> 	
+<small><a href="#top">Top</a></small> 	 	
+			
+	<p>In JDraw a picture can consist
+	of any number of frames. A picture is associated with a global 
+	palette of colours. Frames can either use this global or their 
+	own local palette.<br>
+	Multiple frames can only be saved as GIFs or ICOs. When saving as PNG,
+	only the current frame is considered.</p>
+	<table align=center border=0 cellspacing=0 cellpadding=0>
+	<tr><td align=center><img align="right" src="images/mainframe.png" width="423" 
+		height="372" style="margin-right:20px"><br>
+		<i>JDraw's Main Screen Sections</i></td></tr></table>
+	<p>The picture above enumerates the main screen sections of 
+	JDraw.</p>
+	<ol>
+	<li>The <b>Toolbar </b>consists of buttons, that are either shortcuts 
+	to menu elements or represent drawing tools. Its various buttons
+	are explained in <a href="#toolbar">section 5</a>.</li>
+	<li>The <b>Preview </b>window shows the currently edited frame in 
+		its original size.</li>
+   <li>The <b>Drawing Pane</b> displays the current frame in the current 
+ 	grid width. When scrolled to a different portion of the image,
+   the preview is updated correspondingly. How to draw is the topic
+   of <a href="#tools">section 5.2</a>, which introduces the various 
+   drawing tools.</li>
+   <li>Each frame that is part of the current picture has its own 
+   	<b>Frame Tab</b>. To edit a specific frame just click
+   	on its symbol at the bottom of the drawing panel.</li>
+   <li>Some tools support gradient colour fill. The <b>Gradient Panel</b>
+    	shows the selected filling form. 
+    	(<a href="#gradient">See section 3.2</a>)</li>
+   <li>Each frame uses either a local or the picture's global 
+   	<b>Colour Palette</b>. Colour selection and related
+      topics are covered in <a href="#palette">section 3</a>.</li>
+   </ol>
+
+
+<p>&nbsp;</p>
+<!-- Colour Palette --> 	
+<a name="palette"><h2>3. The Colour Palette</h2></a> 	
+
+<p>The colour palette displays the colours that the current frame uses - named
+"main palette" - and the current gradient filling form - named "gradient palette".
+While the main palette always relates to the current frame, the gradient
+settings are global and don't change, when a different frame is selected.
+The next two sections describe the two palettes.</p>
+
+<!-- Main Palette --> 	
+<a name="colours"<h3>3.1 - The Main Palette</h3></a>
+<small><a href="#top">Top</a></small> 	 	
+
+<p>The main palette is either the picture's global palette or a local one, that
+is only used by a subset of the picture's frames. The blue title bar reflects
+the palette's visibility. You can click this bar to open the menu bar's palette menu
+as a context menu.</p>
+<p>Each colour in a palette is represented by a small box filled in
+the corresponding colour. Such a palette entry can have the following decorations:</p>
+<table>
+<tr>
+	<td valign=top width=40><img valign=top src="images/foreground.gif"></td>
+	<td>A tiny white box in the upper left corner means the colour is the
+	current foreground colour. It's associated with	the left mouse button 
+	when drawing.<br>
+	To select the current foreground colour, left-click on a palette entry.</td>
+</tr>
+<tr>
+	<td valign=top width=40><img valign=top src="images/background.png"></td>
+	<td>A tiny black box in the lower right corner means the colour is the
+	current background colour. It's associated with the right (or middle) mouse
+	button when drawing.<br>
+	To select the current background colour, right-click on a palette entry.</td>
+</tr>
+<tr>
+	<td valign=top width=40><img valign=top src="images/pbackground.gif"></td>
+	<td>A white rectangle around the box means the colour is the frame's
+	background. This colour shines through transparent pixels, if "Colour" is
+	selected as the transparency representation (see the <a href="#pattern_or_colour">
+	corresponding menu item</a>).<br>
+	To select the frame's background colour, left-click on a palette entry while
+	pressing the Ctrl-key.</td> </td>
+</tr>
+<tr>
+	<td valign=top width=40><img valign=top src="images/trans.gif"></td>
+	<td>If the box is completely filled with a pattern of tiny gray tiles the 
+	colour is the frame's transparent colour.<br>
+	To select the transparent colour, right-click on a palette entry while
+	pressing the Ctrl-key.</td> </td></td>
+</tr>
+<tr>
+	<td valign=top width=40><img valign=top src="images/alpha.png"></td>
+	<td>A colour that's not fully opaque is represented by two triangles. The
+	upper left triangle is the transparent pattern, the lower triangle shows the
+	colour itself.</td>
+</tr>
+</table>
+
+<p><b>Edit a colour </b>To edit a colour's RGB and alpha values double-click a
+palette entry. This opens the colour editor dialog which - hopefully - is 
+self-explanatory.</p>
+
+
+<!-- Gradient Palette --> 	
+<a name="gradient"<h3>3.2 - The Gradient Palette</h3></a>
+<small><a href="#top">Top</a></small> 	 	
+
+<p>"Gradient fill" means to smoothly change from one colour to another. The gradient
+palette let's you choose these two colours and set the direction of the colour 
+change.</p>
+<table>
+<tr>	
+	<td><p>The two boxes to the right and left of the gradient palette represent the
+	two colours that define the gradient fill. Double-click them to modify their
+	RGB and alpha values.</p>
+	<p>Select one of the boxes between the two gradient colours to specify the
+	direction of the gradient fill. From left to right and row by row these
+	can be the following:</p>
+	<ul>
+		<li>Top to bottom</li>
+		<li>Left to right</li>
+		<li>Upper left corner to lower right corner</li>
+		<li>Lower left corner to upper right corner</li>
+		<li>Top to middle</li>
+		<li>Left to middle</li>
+		<li>Upper left corner to middle</li>
+		<li>Lower left corner to middle</li>
+	</ul>
+	<p>The <b>"Cycle"</b> check box affects the fill patterns in the second
+	row. After reaching the middle, the colour change is repeated back to the
+	starting colour.</p> 
+	<p>The <b>"Invert"</b> check box applies to all patterns and swaps
+	the two selected colours with each other.<p></td>
+	<td valign=top align=right width=200><img src="images/gradient.png" /></td>
+</tr>
+
+</table> 	
+	 	
+
+<p>&nbsp;</p> 	
+<!-- Menu --> 	
+<a name="menu"><h2>4. The Menu</h2></a> 
+<small><a href="#top">Top</a></small> 	 	
+
+<table cellpadding=4 cellspacing=1>
+<!-- File Menu -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>File Menu</b></td>	
+</tr>
+<tr>
+	<td bgcolor="#eeeeee">New</td>
+	<td><p>Creates a new 32x32 picture using the default palette.</p></td>
+</tr>
+<tr>
+	<td bgcolor="#eeeeee">Open...</td>
+	<td><p><a class="plain" name="open">Asks for a file name and loads the selected picture.</a></p></td>
+</tr>
+<tr>	
+	<td bgcolor="#eeeeee">Save</td>
+	<td><p><a class="plain" name="save"Saves the picture. Asks for a file name, 
+	if none was chosen.<br>
+	Saving as GIF or ICO will ask you to reduce colours, if the picture's 
+	palettes use more than 255 colours.<br>
+	<b>Note - </b>Saving as PNG refers only to the current frame. Saving multiple frames
+	in a PNG is <b>not</b> supported.</a></p></td>
+</tr>
+<tr>	
+	<td bgcolor="#eeeeee">Save&nbsp;as...</td>
+	<td><p>Asks for a file name and saves the picture.</p></td>
+</tr>
+<tr>	
+	<td bgcolor="#eeeeee">Save&nbsp;compressed</td>
+	<td><p>Compresses the picture before it's saved. (see the <a href="#compress">
+	corresponding menu item</a>)</p></td>
+</tr>
+
+<!-- Edit Menu  -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Edit&nbsp;Menu</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">Undo</td>
+		<td><p><a class="plain" name="undo">Undoes the last drawing action.<br>
+		<b>Note - </b>Only the primitive tool actions can be undone. Complex functions 
+		like colour reduction or changing the frame settings cannot be undone.The
+		undo function is somewhat untrustworthy after a complex change. So save
+		often. :)</a></p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Redo</td>
+		<td><p><a class="plain" name="redo">Redoes the last undone action.</a></p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Resize...</td>
+		<td><p>Asks for the new dimension and resizes the picture (<b>without</b> scaling it).</p></td>
+	</tr>	
+	<tr>	
+		<td bgcolor="#eeeeee">Crop&nbsp;Image</td>
+		<td><p><a class="plain" name="crop">Crops the image to the currently selected clip (see <a href="#tools">tools 
+		section</a>).</a></p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Scale Image...</td>
+		<td><p>Asks for the new dimension and scales the picture. You can
+		choose between smooth, average and fast scaling. Scaling can increase
+		the size of your palette.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Compress</td>
+		<td><p><a class="plain" name="compress">Removes all unused colours in the picture's palettes. 
+		Removes local palettes if they do not differ from the global 
+		palette.</a></p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Reduce&nbsp;to&nbsp;255&nbsp;colours</td>
+		<td><p>Combines similar colours until all frames of this picture use maximally 255 colours.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Reset&nbsp;Alpha&nbsp;Values</td>
+		<td><p>Replaces all (semi-)transparent colours with their opaque equivalent.</p></td>
+	</tr>
+</tr>
+<!-- View Menu  -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>View Menu</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">Increase Zoom</td>
+		<td><p>Increases the current grid size by 1.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Decrease Zoom</td>
+		<td><p>Decreases the current grid size by 1.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Set previous Zoom</td>
+		<td><p>Sets the previous grid size.</p></td>		
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Maximum Zoom</td>
+		<td><p>Sets the maximum grid size (25x25 pixels)</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Minimum Zoom</td>
+		<td><p>Sets the minimum grid size (1x1 pixels, displays the picture in its original size)</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Hide&nbsp;Grid/Show&nbsp;Grid</td>
+		<td><p>Shows or hides the grid lines.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Hide Views/Show Views</td>
+		<td><p>Shows or hides the palette and tool panels.</p></td>
+	</tr>	
+	<tr>	
+		<td bgcolor="#eeeeee">Transparency&nbsp;as&nbsp;Colour/as&nbsp;Pattern</td>
+		<td><p><a class="plain" name="pattern_or_colour">Specifies what is visible, if a pixel is transparent. If "Pattern"
+		is selected, the pictures background is displayed as tiny gray tiles. If "Colour" is selected
+		the picture's background colour shines through transparent pixels.</a></p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">View Animation...</td>
+		<td><p><a class="plain" name="view">Displays the current picture as an animated GIF. Behaves like a preview, if the picture
+		contains only a single frame.</a></p></td>
+	</tr>
+<!-- Frames Menu  -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Frames Menu</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">Add Frame</td>
+		<td><p><a class="plain" name="addframe">Adds a new frame to the picture.</a></p></td>
+	</tr>	
+	<tr>	
+		<td bgcolor="#eeeeee">Remove Frame</td>
+		<td><p><a class="plain" name="deleteframe">Removes the current frame from the picture.</a></p></td>
+	</tr>	
+	<tr>	
+		<td bgcolor="#eeeeee">Settings...</td>
+		<td><p>Opens the "Frame Settings" dialog. See <a href="#settings">section 6</a>.</p></td>
+	</tr>	
+	<tr>	
+		<td bgcolor="#eeeeee">Insert Image...</td>
+		<td><p>Asks for a file name, reads the corresponding image and pastes it into the 
+		current frame</a>.</p></td>
+	</tr>	
+<!-- Palette Menu  -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Palette Menu</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">Create/Discard Local Palette</td>
+		<td><p>Either creates a local palette for the current frame or discards it to use the picture's global
+		palette.</p></td>
+	</tr>		
+	<tr>	
+		<td bgcolor="#eeeeee">Add Colour</td>
+		<td><p>Adds a new colour to the frame's palette.</p></td>
+	</tr>		
+	<tr>	
+		<td bgcolor="#eeeeee">Swap Colours</td>
+		<td><p>Replaces all pixels in the current foreground colour with the background colour and vice versa.</p></td>
+	</tr>		
+	<tr>	
+		<td bgcolor="#eeeeee">Remove Colour</td>		
+		<td><p>Removes the current foreground colour from the frame's palette. All 
+		pixels in this colour are replaced with the palette's first colour (#0).</p></td>
+	</tr>		
+	<tr>	
+		<td bgcolor="#eeeeee">Sort Colours</td>		
+		<td><p>Sorts the palette by the colours' HSB values (HSB=hue, saturation, brightness).</p></td>
+	</tr>		
+	<tr>	
+		<td bgcolor="#eeeeee">Remove unused colours</td>
+		<td><p>Removes all unused colours in the current palette. All frames using this
+		palette are considered.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Reduce&nbsp;to&nbsp;255&nbsp;colours</td>
+		<td><p>Combines similar colours until the current palette uses maximally 255 colours. All frames using
+		this palette are considered.</p></td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Reset Alpha Values</td>
+		<td><p>Replaces all (semi-)transparent colours in the current palette with their opaque aquivalent. All
+		frames using this palette are considered.</p></td>
+	</tr>
+<!-- Help Menu  -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Help Menu</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">About...</td>
+		<td><p>Displays JDraw's About dialog to tell you about Source Forge and J-Domain.</p></td>
+	</tr>			
+	<tr>	
+		<td bgcolor="#eeeeee">Help...</td>
+		<td><p>Displays this document as online help.</p></td>
+	</tr>			
+</table>
+
+ 	 
+
+	
+<p>&nbsp;</p> 	
+<!-- Toolbar --> 	
+<a name="toolbar"><h2>5. The Toolbar</h2></a> 
+	
+<small><a href="#top">Top</a></small> 	 	
+
+<p>The tool bar consists of menu shortcuts and tool buttons. The following
+two sections explain these elements.</p>
+
+
+<!-- menu shortcuts -->
+<a name="menu_shortcuts"<h3>5.1 Menu Shortcuts</h3></a>
+<small><a href="#top">Top</a></small> 	 	
+
+<table>
+<tr>
+	<td valign=top width=50><img valign=top src="images/save.png"></td>
+	<td>Shortcut to the <a href="#save">Save menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/open.png"></td>
+	<td>Shortcut to the <a href="#open">Open menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/undo.png"></td>
+	<td>Shortcut to the <a href="#undo">Undo menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/redo.png"></td>
+	<td>Shortcut to the <a href="#redo">Redo menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/add_frame.png"></td>
+	<td>Shortcut to the <a href="#addframe">Add Frame menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/delete_frame.png"></td>
+	<td>Shortcut to the <a href="#deleteframe">Remove Frame menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/view.png"></td>
+	<td>Shortcut to the <a href="#view">View Animation menu item</a>.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/crop.png"></td>
+	<td>Shortcut to the <a href="#crop">Crop menu item</a>.</td>
+</tr>
+</table>
+
+<!-- tools -->
+<a name="tools"<h3>5.2 Tools</h3></a>
+<small><a href="#top">Top</a></small> 	 	
+
+<p><b>Note - </b>Initially JDraw was designed to support GIF pictures only. GIF allows only one
+transparent colour and no semi-transparency. The various tools may have strange effects when you
+work with many (semi-)transparent colours.</p>
+
+<table>
+<tr>
+	<td valign=top width=50><img valign=top src="images/pixel.png"></td>
+	<td><p>The <b>pixel tool</b> let's you draw single pixels. Click and drag the mouse over the draw panel
+	to set pixels. Pressing the left mouse button sets pixels in the current foreground colour, the
+	right mouse button sets the background colour.</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/fill.png"></td>
+	<td><p>The <b>fill tool</b> fills an enclosed image area with the foreground colour (left-click) or the
+	background colour (right-click).</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/pick.png"></td>
+	<td><p>The <b>colour picker</b> selects a colour when you click on a pixel in the drawing panel. Left-clicking
+	sets the foreground colour, right-clicking the background colour.</td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/line.png"></td>
+	<td><p>The <b>line tool</b> draws lines. Click into the drawing panel and drag the mouse to the line's end point.
+	Doing this using the left mouse button draws the line in the foreground colour, the right mouse button
+	uses the background colour. The line tool supports <a href="#antialias">antialiasing</a>.</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/rectangle.png"></td>
+	<td><p>The <b>rectangle tool</b> draws rectangles. Click and drag to specify the rectangle's dimension.
+	Again the left mouse button uses the foreground, the right button the background colour.</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/frectangle.png"></td>
+	<td><p>The <b>filled rectangle tool</b> draws either solid or gradient filled rectangles. In
+	solid filling the left mouse button uses the foreground, the right button the background colour.
+	The filled rectangle tool supports <a href="#grad">gradient filling</a>.</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/oval.png"></td>
+	<td><p>The <b>oval tool</b> draws ovals. Click and drag to specify the oval's dimension.
+	Again the left mouse button uses the foreground, the right button the background colour.</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/foval.png"></td>
+	<td><p>The <b>filled oval tool</b> draws either solid or gradient filled ovals. In
+	solid filling the left mouse button uses the foreground, the right button the background colour.
+	The filled oval tool supports <a href="#antialias">antialiasing</a> and <a href="#grad">gradient 
+	filling</a>. </p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/clip.png"></td>
+	<td><p><a class="plain" name="clip">The <b>clip tool</b> let's you copy and move portions of an image within a frame or between
+	different frames. Click and drag to specify the clip's dimension. When releasing the mouse button the
+	selected clip is represented by a red-white rectangle.<br>
+	If you move the mouse close to the
+	clip's borders, the cursor changes; you can now click and drag to <u>change the clip's size</u>.
+	You can <u>move</u> the clip around by clicking inside and dragging.
+	To <u>paste</u> the clip into the image, double click within the clip. You can define a different clip
+	by clicking outside the active clip and dragging.<br>The clip tool enables the <a href="#crop">crop menu 
+	item</a>.</a></p>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/text.png"></td>
+	<td><p>The <b>text tool</b> let's you place text into your image. When clicking on the text tool, a
+	font dialog is displayed, that - hopefully - is self-explanatory. After selecting a font, a clip
+	containing your text is displayed within the current frame. You can <u>move</u> it around by clicking
+	inside and dragging. To <u>paste</u> the clip into the image, double-click within the clip.
+	To create a new text clip, just click the text tool again.<br>
+	The text tool enables the <a href="#crop">crop menu item</a> and supports 
+	<a href="#antialias">antialias</a> and <a href="#grad">gradient filling</a>.</p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/gradient_off.png"></td>
+	<td><p><a class="plain" name="grad">The <b>Gradient</b> toggle button enables or disables gradient filling. It can only be
+	selected (deselected), if a tool supporting gradient filling is active. When selected,
+	the current tool uses the specified gradient pattern.</a></p></td>
+</tr>
+<tr>
+	<td valign=top width=50><img valign=top src="images/antialias_off.png"></td>
+	<td><p><a class="plain" name="antialias"></a>The <b>Antialias</b> toggle button enables or 
+	disables the antialias mode. It can only be selected (deselected), if a tool supporting antialias is active.
+	"Antialiasing" means	that lines and curves are smoothed by setting extra pixels that reduce the contrast 
+	between back- and foreground. When selected, the penguin looks even cuter and the current tool draws in 
+	antialias mode, which might enlarge the frame's palette.	
+	</p></td>
+</tr>
+
+</table>
+
+	
+<p>&nbsp;</p> 	
+<!-- Frame Settings --> 	
+<a name="settings"><h2>6. The Frame Settings Dialog</h2></a> 
+	
+<small><a href="#top">Top</a></small> 	 	
+
+<p>The frame settings dialog let's you copy or remove frames, reorder them and
+specify how they are displayed in an animated GIF.</p>
+
+<center><img src="images/settings.png" /></center>
+
+<p><b>Copy a frame - </b> To copy a frame, select it it in the frame list and either click the
+Copy button or press Ctrl+C. You can also copy it by drag and drop while pressing the Ctrl key.<br>
+The frame's copy will share its palette. This means that palettes are never duplicated.</p>
+	
+<p><b>Paste a frame - </b> You can paste a previously copied frame by pressing the Paste button or
+pressing Ctrl+V.</p>
+
+<p><b>Remove a frame - </b> Select the frame you want to remove in the frame list and press the
+Remove button.</p>
+	
+<p><b>Move a frame - </b> Drag and drop the frame within the frame list.</p>
+
+<p><b>Animation settings - </b> For each frame you can specify how its previous frame is treated 
+("Disposal method") and for how long the frame is displayed, before the next animation frame is 
+selected ("Time delay in 1/100 seconds").</p>
+
+<p><b>Icon settings - </b>Window's .ico files can store multiple images that can vary in their
+dimensions. JDraw only knows one dimension: the picture's size. If you want to 
+have an icon with a different size than the pictures', enter its dimension 
+in the "Icon width" and "Icon height" fields of the corresponding frame. 
+
+<p><b>Commiting changes - </b>Your changes are applied to the picture whenever you press the OK or
+Apply buttons.
+
+<p><b>Cancelling changes - </b>You can cancel your changes up to the moment when you last pressed the
+Apply button.
+
+
+
+<p>&nbsp;</p>
+<!-- Keyboard Shortcuts --> 	
+<a name="keys"><h2>7. Keyboard Shortcuts</h2></a> 	
+
+<small><a href="#top">Top</a></small> 
+
+<table cellpadding=4 cellspacing=1>
+<!-- general functions -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>General Functions</b></td>	
+</tr>
+<tr>
+	<td bgcolor="#eeeeee">Cancel Dialog/Activate Pixel Tool</td>
+	<td>Pressing the escape key cancels an active dialog if one is present. Else the pixel tool is selected.</td>
+</tr>
+<!-- main palette functions -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Main Palette Functions</b></td>	
+</tr>
+<tr>
+	<td bgcolor="#eeeeee">Select foreground colour</td>
+	<td>Left-click palette entry</td>
+</tr>
+<tr>
+	<td bgcolor="#eeeeee">Select background colour</td>
+	<td>Right-click palette entry</td>
+</tr>
+<tr>	
+	<td bgcolor="#eeeeee">Select frame's background colour</td>
+	<td>Ctrl+Left-click palette entry</td>
+</tr>
+<tr>	
+	<td bgcolor="#eeeeee">Select frame's transparent colour</td>
+	<td>Ctrl+Right-click palette entry</td>
+</tr>
+<tr>	
+	<td bgcolor="#eeeeee">Edit colour</td>
+	<td>Double-click palette entry</td>
+</tr>
+
+<!-- gradient palette functions -->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Gradient Palette Functions</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">Select fill colours</td>
+		<td>Double-click left or right colour.</td>
+	</tr>
+</tr>
+
+<!-- menu shortcuts-->
+<tr>
+	<td colspan=2 bgcolor="#ffe1a5"><b>Menu Shortcuts</b></td>
+	<tr>	
+		<td bgcolor="#eeeeee">Open...</td>
+		<td>Ctrl+O</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Save</td>
+		<td>Ctrl+S</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Save as...</td>
+		<td>Ctrl+A</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Undo</td>
+		<td>Ctrl+Z</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Redo</td>
+		<td>Ctrl+Y</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Resize...</td>
+		<td>Ctrl+R</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Compress</td>
+		<td>Ctrl+K</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Increase Zoom</td>
+		<td>+ (plus)</td>		
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Decrease Zoom</td>
+		<td>- (minus)</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Previous Zoom</td>
+		<td>8</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Maximum Zoom</td>
+		<td>9</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Minimum Zoom</td>
+		<td>0</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Hide/Show Grid</td>
+		<td>Ctrl+G</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Hide/Show Views</td>
+		<td>H</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Transparency&nbsp;as&nbsp;Colour/Pattern</td>
+		<td>Space</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">View Animation</td>
+		<td>Ctrl+V</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Frame Settings</td>
+		<td>Ctrl+E</td>
+	</tr>
+	<tr>	
+		<td bgcolor="#eeeeee">Help</td>
+		<td>Ctrl+H</td>
+	</tr>
+</tr>
+</table>
+
+<br>
+<p>&nbsp;</p>
+<p>We hope you enjoy working with JDraw. Please report bugs and tell us about ideas for new
+features!</p>
+<table>
+<tr>
+	<td valign=top>Contact&nbsp;us!</td>
+	<td><a href="mailto:jdomain@users.sourceforge.net">jdomain@users.sourceforge.net</a><br>
+		<a href="mailto:jdraw@jdomain.de">jdraw@jdomain.de</a></td>
+</tr>
+</table>
+
+
+</body>
+</html>
