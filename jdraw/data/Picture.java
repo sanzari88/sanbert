@@ -52,7 +52,7 @@ public final class Picture extends DataObject {
 		pic.setPalette(Palette.createDefaultPalette(pic));
 		// pic.setTransparent(0);
 		pic.setBackground(0);
-		pic.setForeground(64);
+		//pic.setForeground(64);  //tolgo il colore impostato di default
 
 		return pic;
 	}

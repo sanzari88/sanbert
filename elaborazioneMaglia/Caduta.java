@@ -18,6 +18,8 @@ public class Caduta {
 	
 	private int guidafilo;
 	private int rigaDisegno;
+	
+	private boolean isTrasporto;
 
 	public String getLavoroA() {
 		return lavoroA;
@@ -122,6 +124,16 @@ public class Caduta {
 	public void setRigaDisegno(int rigaDisegno) {
 		this.rigaDisegno = rigaDisegno;
 	}
+
+	public boolean isTrasporto() {
+		return isTrasporto;
+	}
+
+	public void setTrasporto(boolean isTrasporto) {
+		this.isTrasporto = isTrasporto;
+	}
+	
+	
 	
 	
 	

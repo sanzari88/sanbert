@@ -14,7 +14,7 @@ public class Utility {
 		
 		Maglia [][] matriceMaglieTmp = new Maglia [nr+1][nc+1];
 		
-		for(int nrNew =0 ; nr> 0; nr--) {
+		for(int nrNew =0 ; nr>= 0; nr--) {
 				for(int ncNew =0; ncNew<=ncNewMax; ncNew++) {
 					matriceMaglieTmp[nrNew][ncNew]=matriceMaglia[nr][ncNew];
 				}

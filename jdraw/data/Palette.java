@@ -29,29 +29,38 @@ public final class Palette extends DataObject implements DataChangeListener {
 
 	private final Picture picture;
 	private final HashMap colourMap = new HashMap(GIF_MAX_COLOURS);
+	
+	public static HashMap <Integer,String> tabellaColori = new HashMap<>();
+	private int letteraASCI = 96;
 
 	public Palette(Picture aPicture) {
 		picture = aPicture;
+	}
+	
+	public static HashMap <Integer,String>  getTabellaColoriMaglia() {
+		return tabellaColori;
 	}
 
 	public static Palette createDefaultPalette(Picture aPicture) {
 
 		Palette pal = new Palette(aPicture);
 
-		for (int i = 0; i < 8; i++) {
-			pal.addQuiet(Color.black);
-		}
-
+//		for (int i = 0; i < 8; i++) {
+//			pal.addQuiet(Color.black);
+//		}
+		pal.addQuiet(Color.black);
+		
 		final int start = 255;
 		final int step = -26;
-		final int max = 8;
+		final int max = 1;
 		//	rot
 		int b = start;
 		for (int i = 0; i < max; i++) {
-			pal.addQuiet(new Color(b, 0, 0));
+			Color c = new Color(b, 0, 0);
+			pal.addQuiet(c);
 			b = b + step;
 		}
-		// grün
+		// grï¿½n
 		b = start;
 		for (int i = 0; i < max; i++) {
 			pal.addQuiet(new Color(0, b, 0));
@@ -63,7 +72,7 @@ public final class Palette extends DataObject implements DataChangeListener {
 			pal.addQuiet(new Color(0, 0, b));
 			b = b + step;
 		}
-		// türkis
+		// tï¿½rkis
 		b = start;
 		for (int i = 0; i < max; i++) {
 			pal.addQuiet(new Color(0, b, b));
@@ -133,6 +142,7 @@ public final class Palette extends DataObject implements DataChangeListener {
 
 	public ColourEntry addQuiet(Color col) {
 		ColourEntry e = new ColourEntry(col, size());
+		tabellaColori.put(e.getIndex(), Character.toString ((char) letteraASCI++));
 		colours.add(e);
 		return e;
 	}
@@ -205,7 +215,7 @@ public final class Palette extends DataObject implements DataChangeListener {
 		}
 		purgeColours();
 		final int newSize = size();
-		// hat sich was geändert?
+		// hat sich was geï¿½ndert?
 		boolean changed = (oldSize != newSize);
 		if (Log.DEBUG)
 			Log.debug("done.");
@@ -312,7 +322,7 @@ public final class Palette extends DataObject implements DataChangeListener {
 	}
 
 	public boolean isGlobalPalette() {
-		//	achtung: beim speichern zum optimieren auf equals prüfen!
+		//	achtung: beim speichern zum optimieren auf equals prï¿½fen!
 		return picture.getPalette() == this;
 	}
 

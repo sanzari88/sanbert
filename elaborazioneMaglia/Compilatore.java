@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jdraw.data.Palette;
 import magliera.puntoMaglia.Maglia;
 import magliera.puntoMaglia.TipoLavoroEnum;
 
@@ -18,11 +19,9 @@ public class Compilatore {
 	
 	public Compilatore(Maglia[][] matriceMaglia) {
 		this.matriceMaglia= matriceMaglia;
-		tabellaColori = new HashMap<>();
-		righeLavoro = new ArrayList<>();
-		righeTrasporto = new ArrayList<>();
-		tabellaColori.put(16, "a");
-		tabellaColori.put(24, "b");
+		tabellaColori = Palette.getTabellaColoriMaglia();
+//		tabellaColori.put(16, "a");
+//		tabellaColori.put(24, "b");
 		// capovolgendo la matrice ho il disegno in ordine di istruzioni partendo dal basso, quindi da 1
 		Maglia [][] matriceMaglieTmp = Utility.capovolgiMatrice(matriceMaglia);
 		elabora(matriceMaglieTmp);
@@ -33,46 +32,68 @@ public class Compilatore {
 	}
 	
 	private void elabora(Maglia[][] matriceMaglia) {
-		creaFileStruttura();
-		creaComandiLavoro(matriceMaglia);
-		creaComandiTrasporti(matriceMaglia);
+		//creaFileStruttura();
+		System.out.println("File struttura creato");
+		
+		righeLavoro = creaComandiLavoro(matriceMaglia);
+		System.out.println("Comandi lavoro creati");
+		
+		righeTrasporto = creaComandiTrasporti(matriceMaglia);
+		System.out.println("Comandi trasporti creati");
+		
 		GestoreCadute gestore = new GestoreCadute();
-		gestore.elaborazioneFinale(righeLavoro,righeTrasporto);
+		ArrayList<Caduta> lavoro =gestore.elaborazioneFinale(righeLavoro,righeTrasporto);
+		System.out.println("Corse gestite correttamente");
+		
+		String comandiMacchina= gestore.trasformaComandiMacchina(lavoro);
 	}
 	
-	private void creaComandiTrasporti(Maglia[][] matriceMaglia) {
+	private ArrayList<TrasportoCaduta> creaComandiTrasporti(Maglia[][] matriceMaglia) {
+		ArrayList<TrasportoCaduta> righeTrasporto = new ArrayList<>();
 		int nr = matriceMaglia.length-1;
 		int nc = matriceMaglia[0].length;
+		int righaDisegno=0;
 		TrasportoCaduta trasporto ;
 		
-		String traspAD = "";
-		String traspDA = "";
 		
-		for(int r= 0 ;r< nr; r++) {
+		
+		for(int r= 0 ;r< nr; r++) {	
+			String traspAD = "";
+			String traspDA = "";
+			
 			for(int c =0; c < nc; c++) { 
 				Maglia attuale = matriceMaglia[r][c];
 				Maglia rigaSccessiva = matriceMaglia[r+1][c];
 				// Trasporta da avanti a dietro
 				if(attuale.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString()) &&
 						rigaSccessiva.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
+					if(!traspAD.contains(getLetteraColoreFromMaglia(attuale.getColore()))) {
 					traspAD=traspAD+getLetteraColoreFromMaglia(attuale.getColore());
+					}
 				}
 				
 				// trasporto dietro avanti
 				
 				if(attuale.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString()) &&
 						rigaSccessiva.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
-					traspDA.concat(getLetteraColoreFromMaglia(attuale.getColore()));
+					if(!traspDA.contains(getLetteraColoreFromMaglia(attuale.getColore()))) {
+						traspDA=traspDA+getLetteraColoreFromMaglia(attuale.getColore());
+					}
 				}
 			}
+			if(traspAD.length()>0 || traspDA.length()>0) {
 			trasporto = new TrasportoCaduta();
 			trasporto.setPosizione(1);
 			trasporto.setDietroAvanti(traspDA);
 			trasporto.setAvantiDietro(traspAD);
-			trasporto.setRigaDisegno(nr);
+			trasporto.setRigaDisegno(righaDisegno);
 			
 			righeTrasporto.add(trasporto);
 		}
+			righaDisegno++;
+		}
+		
+		return righeTrasporto;
 	}
 
 	private boolean creaFileStruttura() {
@@ -110,19 +131,18 @@ public class Compilatore {
 		return true;
 	}
 	
-	private boolean creaComandiLavoro(Maglia[][] matriceMaglia) {
-			
-			int nr = matriceMaglia.length-1;
+	private ArrayList<LavoroCaduta> creaComandiLavoro(Maglia[][] matriceMaglia) {
+		ArrayList<LavoroCaduta> righeLavoro = new ArrayList<>();
+			int nr = matriceMaglia.length;
 			
 			for(int i=0;i< nr; i++) {
-			
-			LavoroCaduta lavoro =getMaglieLavoro(matriceMaglia[i], i);
-			righeLavoro.add(lavoro);
+				LavoroCaduta lavoro =getMaglieLavoro(matriceMaglia[i], i);
+				righeLavoro.add(lavoro);
 			}
 			
 		
 		
-		return true;
+		return righeLavoro;
 	}
 
 	private String getLetteraColoreFromMaglia(int colore) {
@@ -165,7 +185,7 @@ public class Compilatore {
 		lavoro.setAnteriore(ant);
 		lavoro.setPosteriore(post);
 		lavoro.setIngleseAnt(inglA);
-		lavoro.setInglesePost(post);
+		lavoro.setInglesePost(inglP);
 		lavoro.setRigaDisegno(rigaDisegno);
 		
 		return lavoro;
