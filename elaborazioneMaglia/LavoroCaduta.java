@@ -12,6 +12,10 @@ public class LavoroCaduta {
 	private int gradazione;
 	private int spostamento;
 	
+	private int tirapezza;
+	
+	private int guidafilo;
+	
 	private int rigaDisegno;
 	
 	public LavoroCaduta() {}
@@ -87,6 +91,24 @@ public class LavoroCaduta {
 	public void setRigaDisegno(int rigaDisegno) {
 		this.rigaDisegno = rigaDisegno;
 	}
+
+	public int getGuidafilo() {
+		return guidafilo;
+	}
+
+	public void setGuidafilo(int guidafilo) {
+		this.guidafilo = guidafilo;
+	}
+
+	public int getTirapezza() {
+		return tirapezza;
+	}
+
+	public void setTirapezza(int tirapezza) {
+		this.tirapezza = tirapezza;
+	}
+	
+	
 	
 	
 

@@ -32,7 +32,7 @@ public class Compilatore {
 	}
 	
 	private void elabora(Maglia[][] matriceMaglia) {
-		//creaFileStruttura();
+		creaFileStruttura();
 		System.out.println("File struttura creato");
 		
 		righeLavoro = creaComandiLavoro(matriceMaglia);
@@ -46,8 +46,22 @@ public class Compilatore {
 		System.out.println("Corse gestite correttamente");
 		
 		String comandiMacchina= gestore.trasformaComandiMacchina(lavoro);
+		creaFileComandi(comandiMacchina);
+		System.out.println("File comandi generato correttamente");
 	}
 	
+	private void creaFileComandi(String comandiMacchina) {
+		File f = new File("Comandi.txt");
+		try {
+			PrintStream ps = new PrintStream(f);
+			ps.print(comandiMacchina);
+			ps.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private ArrayList<TrasportoCaduta> creaComandiTrasporti(Maglia[][] matriceMaglia) {
 		ArrayList<TrasportoCaduta> righeTrasporto = new ArrayList<>();
 		int nr = matriceMaglia.length-1;
@@ -187,6 +201,10 @@ public class Compilatore {
 		lavoro.setIngleseAnt(inglA);
 		lavoro.setInglesePost(inglP);
 		lavoro.setRigaDisegno(rigaDisegno);
+		lavoro.setGuidafilo(4);
+		lavoro.setGradazione(5);
+		lavoro.setSpostamento(0);
+		lavoro.setTirapezza(5);
 		
 		return lavoro;
 	}
