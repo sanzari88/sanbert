@@ -18,7 +18,7 @@ public class FileBrowser
 	private boolean ignoreKeys = true;
 
 	public static final BrowserFilter ALL_FILES_FILTER =
-		new BrowserFilter("All Files", new String[] { ".*" }) {
+		new BrowserFilter("Tutti i file", new String[] { ".*" }) {
 
 		protected boolean doAccept(File f) {
 			return true;

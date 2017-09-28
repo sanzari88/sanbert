@@ -72,22 +72,23 @@ public final class SaveAction extends BlockingDrawAction {
 
 	public void startAction() {
 
-		if (LoadAction.isGIF(fileName)) {
-			success =
-				ViewAnimationAction.checkGIFColours()
-					&& GIFWriter.writeGIF(
-						MainFrame.INSTANCE.getPicture(),
-						fileName,
-						saveInterlaced());
-		}
-		else if (LoadAction.isJDraw(fileName)) {
+//		if (LoadAction.isGIF(fileName)) {
+//			success =
+//				ViewAnimationAction.checkGIFColours()
+//					&& GIFWriter.writeGIF(
+//						MainFrame.INSTANCE.getPicture(),
+//						fileName,
+//						saveInterlaced());
+//		}
+//		else 
+		if (LoadAction.isJDraw(fileName)) {
 			success = saveJDraw(fileName);
 		}
-		else if (LoadAction.isICO(fileName)) {
-			success =
-				ViewAnimationAction.checkIconColours()
-					&& IconWriter.writeIcon(MainFrame.INSTANCE.getPicture(), fileName);
-		}
+//		else if (LoadAction.isICO(fileName)) {
+//			success =
+//				ViewAnimationAction.checkIconColours()
+//					&& IconWriter.writeIcon(MainFrame.INSTANCE.getPicture(), fileName);
+//		}
 		else if (LoadAction.isPNG(fileName)) {
 			success =
 				PNGWriter.writePNG(
@@ -97,13 +98,13 @@ public final class SaveAction extends BlockingDrawAction {
 		}
 		else {
 			success = false;
-			Log.warning("Image format not supported.");
+			Log.warning("Formato immagine non supportato.");
 		}
 	}
 
 	public void finishAction() {
 		if (success) {
-			Log.info("Saved to " + fileName);
+			Log.info("Programma salvato in " + fileName);
 			UndoManager.INSTANCE.reset();
 		}
 	}

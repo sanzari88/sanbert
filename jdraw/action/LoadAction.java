@@ -108,23 +108,24 @@ public final class LoadAction extends BlockingDrawAction {
 	}
 
 	public void startAction() {
-		if (isGIF(newFileName)) {
-			picture = GIFReader.readGIF(newFileName);
-			if ( picture == null ) {
-				boolean result = GUIUtil.question(MainFrame.INSTANCE,
-					"Retry?", "JDraw couldn't read this GIF image. Do you want "+
-					"to retry using Java's graphics library?", "Retry","Cancel");
-				if ( result ) {
-					picture = ImageReader.readImage(newFileName);
-				}
-			}
-		}
-		else if (isJDraw(newFileName)) {
+//		if (isGIF(newFileName)) {
+//			picture = GIFReader.readGIF(newFileName);
+//			if ( picture == null ) {
+//				boolean result = GUIUtil.question(MainFrame.INSTANCE,
+//					"Retry?", "JDraw couldn't read this GIF image. Do you want "+
+//					"to retry using Java's graphics library?", "Retry","Cancel");
+//				if ( result ) {
+//					picture = ImageReader.readImage(newFileName);
+//				}
+//			}
+//		}
+//		else 
+			if (isJDraw(newFileName)) {
 			picture = readJDraw(newFileName);
 		}
-		else if (isICO(newFileName)) {
-			picture = IconReader.readIcon(newFileName);
-		}
+//		else if (isICO(newFileName)) {
+//			picture = IconReader.readIcon(newFileName);
+//		}
 		else {
 			picture = ImageReader.readImage(newFileName);
 		}

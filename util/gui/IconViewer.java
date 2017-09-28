@@ -39,7 +39,7 @@ public final class IconViewer extends StandardScrollPane implements ListDataList
 	private static final Border SELECTED_BORDER = new LineBorder(Color.blue);
 
 	private static final String[] JDK_SUPPORTED_IMAGE_EXTENSIONS =
-		{ ".bmp", ".gif", ".jpg", ".jpeg", ".png", ".pnm", ".tif" };
+		{ ".bmp", ".jpg", ".jpeg", ".png", ".pnm" };
 
 	private static final ArrayList IMAGE_HANDLER = new ArrayList();
 

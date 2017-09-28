@@ -29,7 +29,7 @@ public final class SaveAsAction extends DrawAction {
 	}
 
 	public void actionPerformed(DrawAction saveAction) {
-		saveInterlaced = false;
+		//saveInterlaced = false;
 		File file = DrawBrowser.INSTANCE.saveImage();
 		if (file != null) {
 			if (file.exists()) {
@@ -46,7 +46,7 @@ public final class SaveAsAction extends DrawAction {
 					return;
 				}
 			}
-			saveInterlaced = DrawBrowser.INSTANCE.saveInterlaced();
+			//saveInterlaced = DrawBrowser.INSTANCE.saveInterlaced();
 			MainFrame.INSTANCE.setFileName(file.getAbsolutePath());
 			saveAction.actionPerformed();
 		}
