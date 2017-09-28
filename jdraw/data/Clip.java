@@ -18,11 +18,15 @@ import magliera.puntoMaglia.Maglia;
 
 public class Clip extends DataObject {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static enum PUNTO_MAGLIA {RasatoDiritto, RasatoRovescio, MagliaUnitaANT, MagliaUnitaPOST, MagliaInglese};
 
 	protected int transColour = -1;
 
-	private static long serialVersionUID = 0L;
 
 	protected int[][] data;
 	
@@ -156,4 +160,10 @@ public class Clip extends DataObject {
 		y = maxY-y;
 		return y;
 	}
+
+	public static void setMatriceMaglie(Maglia[][] matriceMaglie) {
+		Clip.matriceMaglie = matriceMaglie;
+	}
+	
+	
 }

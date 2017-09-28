@@ -2,14 +2,22 @@ package jdraw.gio;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import jdraw.data.Frame;
 import jdraw.data.Palette;
 import jdraw.data.Picture;
+import salvataggio.SaveProgram;
 import util.Assert;
 import util.Log;
 import util.SimpleLogListener;
@@ -38,7 +46,22 @@ public final class IconReader {
 
 	public static Picture readIcon(String fileName) {
 		try {
-			IconReader reader = new IconReader(new FileInputStream(fileName));
+			
+			// Separo immagine disegno da immagine maglia
+			ObjectInputStream o=new ObjectInputStream(new FileInputStream(fileName));
+			SaveProgram programmaSalvato = (SaveProgram) o.readObject();
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//		    ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutput out = null;
+			out = new ObjectOutputStream(bos);   
+			out.writeObject(programmaSalvato.getP());
+			
+			InputStream is = new ByteArrayInputStream(((ByteArrayOutputStream) out).toByteArray());
+			
+//			IconReader reader = new IconReader(new FileInputStream(fileName));
+			IconReader reader = new IconReader(is);
 			Picture pic = reader.readIcon();
 			Palette palette = pic.getPalette();
 			while (palette.size() < 2) {

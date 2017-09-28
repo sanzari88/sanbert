@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.KeyStroke;
 
+import jdraw.data.Clip;
 import jdraw.data.Palette;
 import jdraw.data.Picture;
 import jdraw.gio.GIFWriter;
@@ -14,6 +15,7 @@ import jdraw.gio.PNGWriter;
 import jdraw.gui.MainFrame;
 import jdraw.gui.Tool;
 import jdraw.gui.undo.UndoManager;
+import salvataggio.SaveProgram;
 import util.Log;
 import util.Util;
 
@@ -49,7 +51,9 @@ public final class SaveAction extends BlockingDrawAction {
 		ObjectOutputStream out = null;
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(aFileName));
-			out.writeObject(Tool.getPicture());
+			SaveProgram save = new SaveProgram(Tool.getPicture(), Clip.getMatriceMaglia());
+			//out.writeObject(Tool.getPicture());
+			out.writeObject(save);
 			return true;
 		}
 		catch (Exception e) {

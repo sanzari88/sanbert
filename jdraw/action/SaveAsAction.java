@@ -36,12 +36,12 @@ public final class SaveAsAction extends DrawAction {
 				boolean overwrite =
 					GUIUtil.question(
 						MainFrame.INSTANCE,
-						"Replace existing file?",
-						"The file <font color=blue>"
+						"Sostituire il programma esistente?",
+						"Il programma <font color=blue>"
 							+ file.getName()
-							+ "</font> already exists. Do you want to replace it?",
-						"Replace",
-						"Cancel");
+							+ "</font> aesiste già!. Sostituirlo=?",
+						"Sostituisci",
+						"Annulla");
 				if (!overwrite) {
 					return;
 				}

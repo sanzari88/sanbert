@@ -28,10 +28,10 @@ public final class DrawMenu extends JMenuBar {
 		createFileMenu();
 		createEditMenu();
 		createViewMenu();
-		createFrameMenu();
-		createPaletteMenu();
-		createHelpMenu();
-		createDebugMenu();
+//		createFrameMenu();
+//		createPaletteMenu();
+//		createHelpMenu();
+//		createDebugMenu();
 	}
 
 	public JMenu getPaletteMenu() {

@@ -1,6 +1,7 @@
 package jdraw.action;
 
 import jdraw.Main;
+import jdraw.data.Clip;
 import jdraw.data.Picture;
 import jdraw.gio.GIFReader;
 import jdraw.gio.IconReader;
@@ -10,6 +11,7 @@ import jdraw.gui.MainFrame;
 import jdraw.gui.PixelTool;
 import jdraw.gui.ToolPanel;
 import jdraw.gui.undo.UndoManager;
+import salvataggio.SaveProgram;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -92,7 +94,9 @@ public final class LoadAction extends BlockingDrawAction {
 		ObjectInputStream in = null;
 		try {
 			in = new ObjectInputStream(new FileInputStream(fileName));
-			return (Picture) in.readObject();
+			SaveProgram programmaSalvato= (SaveProgram) in.readObject();;
+			Clip.setMatriceMaglie(programmaSalvato.getC());
+			return programmaSalvato.getP();
 		}
 		catch (Exception e) {
 			Log.exception(e);

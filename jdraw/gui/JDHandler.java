@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import jdraw.data.Picture;
 import jdraw.gio.GIFWriter;
 import jdraw.gio.IconReader;
-
+import salvataggio.SaveProgram;
 import util.Log;
 import util.Util;
 import util.gui.IconViewer;
@@ -34,7 +34,9 @@ public class JDHandler implements IconViewer.ImageHandler {
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		try {
 			in = new ObjectInputStream(new FileInputStream(fileName));
-			Picture picture = (Picture)in.readObject();
+			// Separo l'immagine dalla programmazione
+			SaveProgram programmaSalvato =(SaveProgram)in.readObject();
+			Picture picture = programmaSalvato.getP();
 			if (picture != null) {				
 				GIFWriter.writeGIF(picture, stream);
 				return new ImageIcon(stream.toByteArray());						
