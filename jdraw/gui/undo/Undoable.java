@@ -83,9 +83,10 @@ public abstract class Undoable {
 			for (int x = minX; x < minX + w; x++) {
 				oldColour = aClip.getPixel(x, y);
 				newColour = indexOfPixelColour(grabbedPixels[i]);
-				if (oldColour != newColour) {
+				//if (oldColour != newColour) {	// rimuovo controllo su vecchio colore
 					list.add(new Pixel(x, y, oldColour, newColour));
-				}
+					Clip.setMaglia(x, y, newColour, jdraw.gui.Tool.getTipoLavoro());
+				//}
 				i++;
 			}
 		}

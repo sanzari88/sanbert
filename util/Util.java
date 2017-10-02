@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.util.StringTokenizer;
 
+import jdraw.gui.MainFrame;
+
 /*
  * Util.java - created on 29.10.2003
  * 
@@ -278,6 +280,14 @@ public final class Util {
 				+ "'\ntrailingHTML: "
 				+ (endsInHTML ? "'" + trailingHTML + "'" : "<empty>");
 		}
+		
+	
+	}
+	
+	public static int getYInvertita(int y) {
+		final int maxY = MainFrame.INSTANCE.getPicture().getWidth()-1;
+		y = maxY-y;
+		return y;
 	}
 
 }

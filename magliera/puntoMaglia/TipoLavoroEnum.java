@@ -5,6 +5,7 @@ public enum TipoLavoroEnum {
 	MagliaAnteriore,
 	MagliaPosteriore,
 	MagliaIngleseAnteriore,
-	MagliaInglesePosteriore
+	MagliaInglesePosteriore,
+	MagliaUnita
 
 }

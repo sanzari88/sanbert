@@ -7,6 +7,7 @@ public class LavoroCaduta {
 	private String posteriore;
 	private String ingleseAnt;
 	private String inglesePost;
+	private String unita;
 	
 	private int velocita;
 	private int gradazione;
@@ -107,6 +108,16 @@ public class LavoroCaduta {
 	public void setTirapezza(int tirapezza) {
 		this.tirapezza = tirapezza;
 	}
+
+	public String getUnita() {
+		return unita;
+	}
+
+	public void setUnita(String unita) {
+		this.unita = unita;
+	}
+	
+	
 	
 	
 	

@@ -1,5 +1,7 @@
 package elaborazioneMaglia;
 
+import java.util.ArrayList;
+
 import magliera.puntoMaglia.Maglia;
 
 public class Utility {
@@ -34,6 +36,30 @@ public class Utility {
 			return "D0"+x;
 		else
 			return"D"+x;
+	}
+	
+	public static boolean isMaglieColoreUguali(ArrayList<Maglia> magliaColore) {
+		for(int i=0; i< magliaColore.size();i++) {
+			if(i!=magliaColore.size()-1 && !magliaColore.get(i).getTipoLavoro().equalsIgnoreCase(magliaColore.get(i+1).getTipoLavoro()))
+				return false;
+			
+		}
+		return true;
+		}
+	
+	public static int getNextFreeColor(ArrayList<String> colors) {
+		int newcolor=0;
+		boolean trovato = false;
+		int i= 65;
+		for(;i<90 && !trovato; i++) {
+			String newcolore= Character.toString((char)i);
+			if(!colors.contains(newcolore)) {
+				newcolor = i;
+				trovato=true;
+			}
+		}
+		
+		return newcolor;
 	}
 
 }

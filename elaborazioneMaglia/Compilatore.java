@@ -166,40 +166,132 @@ public class Compilatore {
 	
 	private LavoroCaduta getMaglieLavoro(Maglia[] rigaMatriceMaglia, int rigaDisegno) {
 		String colore ="";
+		ArrayList<String> colors = new ArrayList<>();
 		String ant = "";
 		String post ="";
 		String inglA ="";
 		String inglP = "";
+		String unita = "";
+		ArrayList<Colore> colori = new ArrayList<>();
 		LavoroCaduta lavoro = new LavoroCaduta();
 		
 		for(Maglia m: rigaMatriceMaglia) {
-			colore = getLetteraColoreFromMaglia(m.getColore());
+			if(!colore.contains(getLetteraColoreFromMaglia(m.getColore()))) {
+				colore= colore + getLetteraColoreFromMaglia(m.getColore());
+				colors.add(getLetteraColoreFromMaglia(m.getColore()));
+			}
+		}
 			
+			for(String col : colors) {
+				// scorro la riga per ogni colore
+				Colore c = new Colore();
+				c.setColore(col);
+				for(Maglia m1: rigaMatriceMaglia) {
+					if(getLetteraColoreFromMaglia(m1.getColore()).equalsIgnoreCase(col)) {
+						
+						if(m1.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
+							c.addAnteriore(m1);
+						}
+						
+						if(m1.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
+							c.addPosteriore(m1);
+						}
+						
+						if(m1.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaIngleseAnteriore.toString())) {
+							c.addInglAnt(m1);
+						}
+						
+						if(m1.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaInglesePosteriore.toString())) {
+							c.addInglPost(m1);
+						}
+						
+						if(m1.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaUnita.toString())) {
+							c.addUnita(m1);
+						}
+					}
+				}
+				
+				colori.add(c);
+			}
+			
+			for(Colore col: colori) {
+				// per ogni colore verifico se devo riealborare le maglie
+				if(!col.isMaglieUgualiColore()) {
+					riealoboraColoriAndMaglie(colors,col.getAnteriore());
+					riealoboraColoriAndMaglie(colors,col.getPosteriore());
+					riealoboraColoriAndMaglie(colors,col.getInglAnt());
+					riealoboraColoriAndMaglie(colors,col.getInglPost());
+					riealoboraColoriAndMaglie(colors,col.getUnita());
+				}
+			}
+			
+			ricomponiRigaMatriceMaglia(colori, rigaMatriceMaglia);
+			
+			
+			for(Maglia m: rigaMatriceMaglia) {
+				String color=Character.toString((char)m.getColore());
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
-				if(!ant.contains(colore))
-					ant=ant+colore;
+				if(m.getNewColor()==0) {
+					if(!ant.contains(color))
+						ant=ant+color;
+				}
+				else {
+					if(!ant.contains(Character.toString((char)m.getNewColor())))
+						ant=ant+Character.toString((char)m.getNewColor());
+				}
 			}
 			
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
-				if(!post.contains(colore))
-					post=post+colore;
+				if(m.getNewColor()==0) {
+					if(!post.contains(color))
+						post=post+color;
+				}
+				else {
+					if(!post.contains(Character.toString((char)m.getNewColor())))
+						post=post+Character.toString((char)m.getNewColor());
+				}
 			}
 			
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaIngleseAnteriore.toString())) {
-				if(!inglA.contains(colore))
-					inglA=inglA+colore;
+				if(m.getNewColor()==0) {
+					if(!inglA.contains(Character.toString((char)m.getNewColor())))
+						inglA=inglA+Character.toString((char)m.getNewColor());
+				}
+				else {
+					if(!inglA.contains(Character.toString((char)m.getNewColor())))
+						inglA=inglA+Character.toString((char)m.getNewColor());
+				}
 			}
 			
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaInglesePosteriore.toString())) {
-				if(!inglP.contains(colore))
-					inglP=inglP+colore;
+				if(m.getNewColor()==0) {
+					if(!inglP.contains(Character.toString((char)m.getNewColor())))
+						inglP=inglP+Character.toString((char)m.getNewColor());
+				}
+				else {
+					if(!inglP.contains(Character.toString((char)m.getNewColor())))
+						inglP=inglP+Character.toString((char)m.getNewColor());
+				}
+			}
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaUnita.toString())) {
+				if(m.getNewColor()==0) {
+					if(!unita.contains(Character.toString((char)m.getNewColor())))
+						unita=unita+Character.toString((char)m.getNewColor());
+				}
+				else {
+					if(!unita.contains(Character.toString((char)m.getNewColor())))
+						unita=unita+Character.toString((char)m.getNewColor());
+				}
+			}
 			}
 				
-		}
+	
+		
 		lavoro.setAnteriore(ant);
 		lavoro.setPosteriore(post);
 		lavoro.setIngleseAnt(inglA);
 		lavoro.setInglesePost(inglP);
+		lavoro.setUnita(unita);
 		lavoro.setRigaDisegno(rigaDisegno);
 		lavoro.setGuidafilo(4);
 		lavoro.setGradazione(5);
@@ -207,6 +299,108 @@ public class Compilatore {
 		lavoro.setTirapezza(5);
 		
 		return lavoro;
+	}
+	
+	private void ricomponiRigaMatriceMaglia(ArrayList<Colore> maglieColori,Maglia[] rigaMatriceMaglia) {
+		
+		// aggiorno la riga delle matrice delle maglie 
+		
+		for(Colore c: maglieColori) {
+			for(Maglia m: c.getAnteriore())
+				rigaMatriceMaglia[m.getX()]=m;
+			
+			for(Maglia m: c.getPosteriore())
+				rigaMatriceMaglia[m.getX()]=m;
+			
+			for(Maglia m: c.getInglAnt())
+				rigaMatriceMaglia[m.getX()]=m;
+			
+			for(Maglia m: c.getInglPost())
+				rigaMatriceMaglia[m.getX()]=m;
+			
+			for(Maglia m: c.getUnita())
+				rigaMatriceMaglia[m.getX()]=m;
+		}
+		}
+	
+	private void riealoboraColoriAndMaglie(ArrayList<String> colors, ArrayList<Maglia> maglie) {
+		
+		
+		String newColorAnt="";
+		String newColorPost="";
+		String newColorInglAnt="";
+		String newColorInglPost="";
+		String newColorUnita="";
+		int newColor = 0;
+		
+		for(Maglia m:maglie) {
+			
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
+				
+				if(newColorAnt.length()<1) {
+					//genera nuovo colore
+					newColor=Utility.getNextFreeColor(colors);
+					newColorAnt=Character.toString((char)newColor);
+					m.setNewColor(newColor);
+					colors.add(newColorAnt);
+				}
+				else {
+					m.setNewColor(newColor);
+				}
+			}
+			
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
+				if(newColorPost.length()<1) {
+					//genera nuovo colore
+					 newColor=Utility.getNextFreeColor(colors);
+					newColorPost=Character.toString((char)newColor);
+					m.setNewColor(newColor);
+					colors.add(newColorPost);
+				}
+				else {
+					m.setNewColor(newColor);
+				}
+			}
+			
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaIngleseAnteriore.toString())) {
+				if(newColorInglAnt.length()<1) {
+					//genera nuovo colore
+					 newColor=Utility.getNextFreeColor(colors);
+					newColorInglAnt=Character.toString((char)newColor);
+					m.setNewColor(newColor);
+					colors.add(newColorInglAnt);
+				}
+				else {
+					m.setNewColor(newColor);
+				}
+			}
+			
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaInglesePosteriore.toString())) {
+				if(newColorInglPost.length()<1) {
+					//genera nuovo colore
+					 newColor=Utility.getNextFreeColor(colors);
+					newColorInglPost=Character.toString((char)newColor);
+					m.setNewColor(newColor);
+					colors.add(newColorInglPost);
+				}
+				else {
+					m.setNewColor(newColor);
+				}
+			}
+			
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaUnita.toString())) {
+				if(newColorUnita.length()<1) {
+					//genera nuovo colore
+					 newColor=Utility.getNextFreeColor(colors);
+					newColorUnita=Character.toString((char)newColor);
+					m.setNewColor(newColor);
+					colors.add(newColorUnita);
+				}
+				else {
+					m.setNewColor(newColor);
+				}
+			}
+		}
 	}
 
 }

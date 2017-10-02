@@ -41,7 +41,7 @@ public abstract class RectangularSelectionTool extends Tool {
 			lastAction = DRAGGED;
 			if (!ignore) {
 				if (p != null) {
-					drawRubberBand(); // löschen
+					drawRubberBand(); // lï¿½schen
 					current = p;
 					drawRubberBand();
 				}

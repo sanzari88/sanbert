@@ -38,10 +38,14 @@ public final class DrawLine extends Undoable {
 	}
 
 	private DrawPixel savePixels(Color col, Point start, Point end) {
+		
+		int startInv =util.Util.getYInvertita(start.y);
+		int endInv = util.Util.getYInvertita(end.y);
+		
 		int minX = Math.min(start.x, end.x);
 		int maxX = Math.max(start.x, end.x);
-		int minY = Math.min(start.y, end.y);
-		int maxY = Math.max(start.y, end.y);
+		int minY = Math.min(startInv, endInv);
+		int maxY = Math.max(startInv, endInv);
 		int w = (maxX - minX) + 1;
 		int h = (maxY - minY) + 1;
 
@@ -59,7 +63,9 @@ public final class DrawLine extends Undoable {
 		}
 
 		g.setColor(col);
-		g.drawLine(start.x, start.y, end.x, end.y);
+		//g.drawLine(start.x, start.y, end.x, end.y);
+		
+		g.drawLine(start.x, startInv, end.x, endInv);
 
 		if (Tool.isAntialiasOn()) {
 			return calculateDifference(

@@ -112,7 +112,7 @@ public class Clip extends DataObject {
 		data[y][x] = col;
 	}
 	
-	public void setMaglia(int x, int y, int colore, String tipoLavoro) {
+	public static void setMaglia(int x, int y, int colore, String tipoLavoro) {
 		Maglia m = new Maglia(x,y,colore,tipoLavoro);
 		matriceMaglie[y][x] = m;
 		System.out.println("Punto maglia "+m.getTipoLavoro()+" inserito correttamente nella matrice delle maglie");

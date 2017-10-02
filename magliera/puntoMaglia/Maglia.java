@@ -15,6 +15,8 @@ public class Maglia implements Serializable{
 	
 	private int colore;
 	
+	private int newColor =0;
+	
 	private String tipoLavoro;
 	
 	
@@ -64,6 +66,18 @@ public class Maglia implements Serializable{
 	public void setTipoLavoro(String tipoLavoro) {
 		this.tipoLavoro = tipoLavoro;
 	}
+
+
+	public int getNewColor() {
+		return newColor;
+	}
+
+
+	public void setNewColor(int newColor) {
+		this.newColor = newColor;
+	}
+	
+	
 	
 	
 
