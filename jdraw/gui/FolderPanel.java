@@ -34,8 +34,8 @@ public final class FolderPanel extends JPanel implements ChangeListener {
 	private static final ArrayList GRID_LISTENERS = new ArrayList();
 	public static final FolderPanel INSTANCE = new FolderPanel();
 
-	public static final int MAX_GRID = 45;
-	public static final int MIN_GRID = 1;
+	public static final int MAX_GRID = 60;
+	public static final int MIN_GRID = 10;
 
 	private final JTabbedPane frameFolder = new JTabbedPane();
 	private final ImageIcon frameIcon =

@@ -109,7 +109,7 @@ public final class MainFrame
 
 	protected void createGui() {
 		JPanel mainPanel = getMainPanel();
-		mainPanel.add(StatusPanel.INSTANCE, BorderLayout.SOUTH);
+		mainPanel.add(StatusPanel.INSTANCE, BorderLayout.SOUTH); // barra inferiore dove sono le indicazioni del mouse
 		centerPanel.add(FolderPanel.INSTANCE, BorderLayout.CENTER);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		showViews(true);

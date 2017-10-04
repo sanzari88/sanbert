@@ -32,11 +32,12 @@ public class Compilatore {
 	}
 	
 	private void elabora(Maglia[][] matriceMaglia) {
-		creaFileStruttura();
-		System.out.println("File struttura creato");
 		
 		righeLavoro = creaComandiLavoro(matriceMaglia);
 		System.out.println("Comandi lavoro creati");
+		
+		creaFileStruttura();
+		System.out.println("File struttura creato");
 		
 		righeTrasporto = creaComandiTrasporti(matriceMaglia);
 		System.out.println("Comandi trasporti creati");
@@ -74,6 +75,7 @@ public class Compilatore {
 		for(int r= 0 ;r< nr; r++) {	
 			String traspAD = "";
 			String traspDA = "";
+			String colore="";
 			
 			for(int c =0; c < nc; c++) { 
 				Maglia attuale = matriceMaglia[r][c];
@@ -81,8 +83,9 @@ public class Compilatore {
 				// Trasporta da avanti a dietro
 				if(attuale.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString()) &&
 						rigaSccessiva.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
-					if(!traspAD.contains(getLetteraColoreFromMaglia(attuale.getColore()))) {
-					traspAD=traspAD+getLetteraColoreFromMaglia(attuale.getColore());
+					colore = (attuale.getNewColor()==0 ? getLetteraColoreFromMaglia(attuale.getColore()) : Character.toString((char)attuale.getNewColor()));
+					if(!traspAD.contains(colore)) {
+					traspAD=traspAD+colore;
 					}
 				}
 				
@@ -90,8 +93,9 @@ public class Compilatore {
 				
 				if(attuale.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString()) &&
 						rigaSccessiva.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
-					if(!traspDA.contains(getLetteraColoreFromMaglia(attuale.getColore()))) {
-						traspDA=traspDA+getLetteraColoreFromMaglia(attuale.getColore());
+					colore = (attuale.getNewColor()==0 ? getLetteraColoreFromMaglia(attuale.getColore()) : Character.toString((char)attuale.getNewColor()));
+					if(!traspDA.contains(colore)) {
+						traspDA=traspDA+colore;
 					}
 				}
 			}
@@ -114,7 +118,11 @@ public class Compilatore {
 		File f = new File("Struttura.txt");
 		try {
 			PrintStream ps = new PrintStream(f);
+			ps.println("###########################################################################");
 			ps.println("#-------- Programma di generazione automatico by Raffaele Sanzari --------#");
+			ps.println("###########################################################################\n\n\n\n");
+			
+			ps.println("#-------------------------Selezioni Aghi-----------------------------------#\n\n\n");
 			
 			
 			int nr = matriceMaglia.length-1;
@@ -126,16 +134,30 @@ public class Compilatore {
 				String indiceNormalizzato= Utility.normalizzaIndiceDisegno(indiceDisegno+1);
 				System.out.print(indiceNormalizzato+" = '");
 				ps.print(indiceNormalizzato+" = '");
+				String colore;
 				for(int i=0; i<nc; i++) { 
 					 Maglia m = matriceMaglia[r][i];
-					 String colore = getLetteraColoreFromMaglia(m.getColore());
-					 ps.print(colore);
-					 System.out.print(colore);;
+					 if(m.getNewColor()==0) {
+					  colore = getLetteraColoreFromMaglia(m.getColore());
+					  ps.print(colore);
+					  System.out.print(colore);
+					 }
+					 else {
+						 colore = Character.toString((char)m.getNewColor());
+						  ps.print(colore);
+						  System.out.print(colore);
+					 }
 				}
 				ps.println("';");
 				System.out.println("';");
 				indiceDisegno--;
 			}
+			ps.println("#------------------------- FINE  Selezioni Aghi-----------------------------#\n\n\n");
+			ps.println("#	Sezione Dichiarativa\n\n");
+			ps.println("#	Teli \n\n");
+			ps.println("TELO T1 = AGOIT1 - AGOFT1;\n\n\n");
+			ps.println("# MOTIVI COMPOSIZIONE FRONTURE;\n\n\n");
+			ps.println("FRSCARICO = 100 'a';");
 			ps.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -232,6 +254,7 @@ public class Compilatore {
 				String color=Character.toString((char)m.getColore());
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
 				if(m.getNewColor()==0) {
+					color=getLetteraColoreFromMaglia(m.getColore());
 					if(!ant.contains(color))
 						ant=ant+color;
 				}
@@ -243,6 +266,7 @@ public class Compilatore {
 			
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
 				if(m.getNewColor()==0) {
+					color=getLetteraColoreFromMaglia(m.getColore());
 					if(!post.contains(color))
 						post=post+color;
 				}
@@ -254,6 +278,7 @@ public class Compilatore {
 			
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaIngleseAnteriore.toString())) {
 				if(m.getNewColor()==0) {
+					color=getLetteraColoreFromMaglia(m.getColore());
 					if(!inglA.contains(Character.toString((char)m.getNewColor())))
 						inglA=inglA+Character.toString((char)m.getNewColor());
 				}
@@ -265,6 +290,7 @@ public class Compilatore {
 			
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaInglesePosteriore.toString())) {
 				if(m.getNewColor()==0) {
+					color=getLetteraColoreFromMaglia(m.getColore());
 					if(!inglP.contains(Character.toString((char)m.getNewColor())))
 						inglP=inglP+Character.toString((char)m.getNewColor());
 				}
@@ -275,6 +301,7 @@ public class Compilatore {
 			}
 			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaUnita.toString())) {
 				if(m.getNewColor()==0) {
+					color=getLetteraColoreFromMaglia(m.getColore());
 					if(!unita.contains(Character.toString((char)m.getNewColor())))
 						unita=unita+Character.toString((char)m.getNewColor());
 				}
