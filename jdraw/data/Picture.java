@@ -56,6 +56,17 @@ public final class Picture extends DataObject {
 
 		return pic;
 	}
+	
+	
+	public static Picture createNewPicture(int x, int y) {
+		Picture pic = createPicture(x, y);
+		pic.setPalette(Palette.createDefaultPalette(pic));
+		// pic.setTransparent(0);
+		pic.setBackground(0);
+		//pic.setForeground(64);  //tolgo il colore impostato di default
+
+		return pic;
+	}
 
 	public void scale(Dimension dimension, int scaleStyle) {
 		final int frameCount = getFrameCount();

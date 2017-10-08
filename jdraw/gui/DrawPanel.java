@@ -85,6 +85,15 @@ public class DrawPanel extends JPanel {
 					else if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.values()[1].toString())) {
 						imageLavoro = new ImageIcon("/Users/sanzariraffaele/Downloads/jdraw/jdraw/images/maglie/maglia_rovescio.png");
 					}
+					else if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.values()[2].toString())) {
+						imageLavoro = new ImageIcon("/Users/sanzariraffaele/Downloads/jdraw/jdraw/images/maglie/ingleseAnt.png");
+					}
+					else if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.values()[3].toString())) {
+						imageLavoro = new ImageIcon("/Users/sanzariraffaele/Downloads/jdraw/jdraw/images/maglie/inglesePost.png");
+					}
+					else if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.values()[4].toString())) {
+						imageLavoro = new ImageIcon("/Users/sanzariraffaele/Downloads/jdraw/jdraw/images/maglie/maglia_unita.png");
+					}
 				}
 					 
 					g.setColor(pal.getColour(c).getColour()); 

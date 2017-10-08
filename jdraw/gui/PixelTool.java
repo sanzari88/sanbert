@@ -54,8 +54,7 @@ public final class PixelTool extends Tool {
 
 	private void setPixel(Point p, int colour) {
 		Frame frame = getCurrentFrame();
-		if(p.y==4)
-			System.out.println("raffo");;
+		
 		int y_Invertita=Clip.getYInvertita(p.y);
 		currentColour = colour;
 		int oldColour = frame.getPixel(p.x,y_Invertita);

@@ -44,7 +44,7 @@ public final class MainFrame
 		setJMenuBar(new DrawMenu()); // compone i menu
 		updateTitle();
 		createGui();
-		JPanel glassPane = new JPanel();
+		JPanel glassPane = new JPanel(); // il glass panel mostra le coordinate sull 'immagine
 		glassPane.setLayout(null);
 		glassPane.setOpaque(false);
 		glassPane.add(InfoClip.INSTANCE);

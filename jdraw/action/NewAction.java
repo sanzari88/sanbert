@@ -1,5 +1,6 @@
 package jdraw.action;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -7,7 +8,9 @@ import javax.swing.KeyStroke;
 
 import jdraw.Main;
 import jdraw.data.Picture;
+import jdraw.gui.DrawDialog;
 import jdraw.gui.MainFrame;
+import jdraw.gui.SizeDialog;
 import jdraw.gui.undo.UndoManager;
 import util.Log;
 
@@ -29,8 +32,17 @@ public class NewAction extends DrawAction {
 
 	public void actionPerformed(ActionEvent e) {
 		MainFrame.INSTANCE.setFileName( null );
-		Main.setPicture( Picture.createDefaultPicture() );
+		
 		UndoManager.INSTANCE.reset();
+		Dimension dimension;
+		SizeDialog d = new SizeDialog();
+		d.open();
+		if (d.getResult() == DrawDialog.APPROVE) {
+			dimension = d.getInput();
+			Main.setPicture( Picture.createNewPicture(dimension.width, dimension.height) );
+		}
+		
+		
 		Log.info( "Nuovo programma creato con successo.");
 	}
 

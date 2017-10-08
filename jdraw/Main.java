@@ -117,7 +117,7 @@ public final class Main {
 		preload();
 		Picture picture = Picture.createDefaultPicture(); // qui setta le dimensioni del disegno
 		setPicture(picture);
-		ResourceLoader.getImage("jdraw/images/background.gif");
+		ResourceLoader.getImage("jdraw/images/background.gif"); //immagine a quadrettini
 
 		Util.delay(SPLASH_DELAY);
 		splash.close();

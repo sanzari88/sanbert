@@ -5,6 +5,7 @@ import jdraw.maglie.MagliaDirittoAction;
 import jdraw.maglie.MagliaInglAntAction;
 import jdraw.maglie.MagliaInglPostAction;
 import jdraw.maglie.MagliaRovescioAction;
+import jdraw.maglie.MagliaUnitaAction;
 import sun.util.resources.cldr.tzm.CurrencyNames_tzm;
 
 import java.awt.BorderLayout;
@@ -59,8 +60,8 @@ public final class ToolPanel extends JPanel {
 	private ToolButton gradientFillButton;
 
 	private ToolPanel() {
-		super(new BorderLayout(6, 0));
-		setBorder(new EmptyBorder(0, 0, 4, 0));
+		super(new BorderLayout(60, 0));	// Margine a sinistra dell'anteprima
+		setBorder(new EmptyBorder(0, 0, 4, 0)); // Margini della barra degli strumenti
 		currentTool = PixelTool.INSTANCE;
 		createGui();
 	}
@@ -226,6 +227,14 @@ public final class ToolPanel extends JPanel {
 				DrawAction.getAction(MagliaRovescioAction.class),"maglia_rovescio.png");
 		//toolGroup.add(button);
 		p.add(button, gc);
+		
+		gc.gridx++;
+		button =
+				new TipoMagliaButton(
+					DrawAction.getAction(MagliaUnitaAction.class),"maglia_unita.png");
+			//toolGroup.add(button);
+			p.add(button, gc);
+			
 		gc.gridy++;
 		gc.gridx = 0;
 		
@@ -241,6 +250,10 @@ public final class ToolPanel extends JPanel {
 						DrawAction.getAction(MagliaInglPostAction.class),"inglesePost.png");
 				//toolGroup.add(button);
 				p.add(button, gc);
+				
+		
+		
+		
 		
 		return p;
 	}

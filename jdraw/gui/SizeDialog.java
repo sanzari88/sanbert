@@ -43,7 +43,7 @@ public class SizeDialog extends DrawDialog implements DocumentListener {
 		new JTextField(String.valueOf(dim.height), 4);
 
 	public SizeDialog() {
-		super("Please enter image size:");
+		super("Inserisci dimensioni immagine:");
 
 		WidgetFactory.addFocusAdapter(widthField);
 		WidgetFactory.addFocusAdapter(heightField);
@@ -60,13 +60,13 @@ public class SizeDialog extends DrawDialog implements DocumentListener {
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.insets = new Insets(0, 2, 2, 2);
 		gc.gridwidth = 2;
-		JLabel text = new JLabel("<html><b>Please enter image size:</b></html>");
+		JLabel text = new JLabel("<html><b>Dimensioni Immagine:</b></html>");
 		text.setBorder(new EmptyBorder(0, 0, 10, 0));
 		p.add(text, gc);
 
 		gc.gridwidth = 1;
 		gc.gridy++;
-		JLabel l = new JLabel("Width: ");
+		JLabel l = new JLabel("Larghezza: ");
 		p.add(l, gc);
 
 		gc.gridx++;
@@ -74,7 +74,7 @@ public class SizeDialog extends DrawDialog implements DocumentListener {
 
 		gc.gridx = 0;
 		gc.gridy++;
-		l = new JLabel("Height: ");
+		l = new JLabel("Altezza: ");
 		p.add(l, gc);
 
 		gc.gridx++;

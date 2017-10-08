@@ -153,11 +153,68 @@ public class Compilatore {
 				indiceDisegno--;
 			}
 			ps.println("#------------------------- FINE  Selezioni Aghi-----------------------------#\n\n\n");
-			ps.println("#	Sezione Dichiarativa\n\n");
+			ps.println("#	Inizio generazione parametri, immagliamento, motivi, composizioni  \n\n");
 			ps.println("#	Teli \n\n");
-			ps.println("TELO T1 = AGOIT1 - AGOFT1;\n\n\n");
-			ps.println("# MOTIVI COMPOSIZIONE FRONTURE;\n\n\n");
-			ps.println("FRSCARICO = 100 'a';");
+			ps.println("TELO TELI = AGOIT1 - AGOFT1;");
+			ps.println("MOT MOTINIZIO = D0001 (D0001 - "+Utility.normalizzaIndiceDisegno(nr)+")");
+			ps.println("COINIZIO = MOTINIZIO;");
+			ps.println("FRINIZIO = MEM051 : MEM053 (TINIZIO 1'.');");
+			ps.println("#-----------------------------------------------------------------------------\n\n\n");
+			ps.println("#------ INIZIO GENERAZIONE PARAMETRI PER GUIDAFILO -----------\n");
+			ps.println("GTBASE =");
+			ps.println("GHBASE =");
+			ps.println("GHPARK =");
+			ps.println("GXBASE =");
+			ps.println("GHPINZ =");
+			ps.println("GHPKPZ =");
+			ps.println("#--------------------------------------------------------------------------------");
+			ps.println("#						SUBROUTINES");
+			ps.println("#--------------------------------------------------------------------------------");
+			ps.println("#--------------------------------------------------------------------------------");
+			ps.println("#						ECONOMIZZATORI");
+			ps.println("#--------------------------------------------------------------------------------");
+			ps.println("#--------------------------------------------------------------------------------");
+			ps.println("#						FASE ESECUTIVA");
+			ps.println("#--------------------------------------------------------------------------------");
+			ps.println("ESEGUI");
+			ps.println("SET CORTISUP = MEM91;");
+			ps.println("SET CORTIRAP1 = MEM92;");
+			ps.println("SET CORTIRAP2 = MEM93;");
+			ps.println("SET CORGRADAZ = MEM94;");
+			ps.println("SET INCRMODE = 1;");
+			ps.println("SET AGHITELO = "+nc+";");
+			ps.println("SET AGHITOT = AGHITELO + MEM54;");
+			ps.println("SET AGHITELO = AGHITOT * 0;");
+			ps.println("SET AGOIT1 = MEM51 + AGHITELI;");
+			ps.println("SET AGHITELO = AGHITELO + 1;");
+			ps.println("SET AGHITELO = AGHITELO * MEM53;");
+			ps.println("SET AGOFT1 = AGOIT1 + AGHITELO;");
+			ps.println("SET DISTPIN = 9 * FINEZZA;");
+			ps.println("SET PASSPIN = 110 * FINEZZA;");
+			ps.println("SET PASSPIN = PASSPIN / 254;");
+			
+			ps.println("#--------    GESTIONE EZTRACORSA GUIDAFILO	-------");
+			
+			ps.println("SET HGF4A = AGOIT1 - MEM304;");
+			ps.println("SET PGF4A = AGOFT1 - MEM314;");
+			ps.println("SET HPGF4A = PASSPIN * 0;");
+			ps.println("SET HPGF4A = DISTPIN + HPGF4A;");
+			ps.println("SET HPGF4A = 0 - HPGF4A;");
+			ps.println("SET PPGF4A = PASSPIN * 0;");
+			ps.println("SET PPGF4A = DISTPIN + PPGF4A;");
+			ps.println("SET PPGF4A =  AGHIMAC + PPGF4A;");
+			
+			ps.println("ATTIVA GTBASE;");
+			ps.println("ATTIVA GXBASE;");
+			ps.println("ATTIVA GHPINZ;");
+			ps.println("ATTIVA FRINIZIO;");
+			ps.println("GOSUB GFPINZE ;");
+			ps.println("ATTIVA GHBASE;");
+			ps.println("ATTIVA FRINIZIO;");
+			
+			ps.println("#--------    INIZIO COMANDI MACCHINA	-------");
+			
+			
 			ps.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
