@@ -14,6 +14,7 @@ import jdraw.data.event.ChangeEvent;
 import jdraw.gio.ImageReader;
 import jdraw.gio.PNGWriter;
 import jdraw.gui.Tool;
+import magliera.puntoMaglia.TipoLavoroEnum;
 import util.Log;
 import util.Util;
 import util.gui.GUIUtil;
@@ -49,12 +50,24 @@ public final class Picture extends DataObject {
 
 	public static Picture createDefaultPicture() {
 		Picture pic = createPicture(10, 10);
+		
+		
 		pic.setPalette(Palette.createDefaultPalette(pic));
 		// pic.setTransparent(0);
 		pic.setBackground(0);
+		
+		// setto come default all'apertura del programma il rasato anteriore
+		jdraw.gui.ToolPanel.setMagliaSelezionata(TipoLavoroEnum.MagliaAnteriore.toString());
 		//pic.setForeground(64);  //tolgo il colore impostato di default
+		Clip.makeMagliaAndComandi(10, 10);
 
 		return pic;
+	}
+	
+	public static Picture createPictureComandi() {
+		Picture picComandi= createPictureComandi(10, 5);
+		picComandi.setBackground(0);
+		return picComandi;
 	}
 	
 	
@@ -64,6 +77,9 @@ public final class Picture extends DataObject {
 		// pic.setTransparent(0);
 		pic.setBackground(0);
 		//pic.setForeground(64);  //tolgo il colore impostato di default
+		// setto come default all'apertura del programma il rasato anteriore
+		jdraw.gui.ToolPanel.setMagliaSelezionata(TipoLavoroEnum.MagliaAnteriore.toString());
+		Clip.makeMagliaAndComandi(y, x);
 
 		return pic;
 	}
@@ -120,6 +136,12 @@ public final class Picture extends DataObject {
 		Picture pic = new Picture(aWidth, aHeight);
 		pic.setPalette(new Palette(pic));
 		pic.addFrame();
+		return pic;
+	}
+	
+	public static Picture createPictureComandi(int aWidth, int aHeight) {
+		Picture pic = new Picture(aWidth, aHeight);
+		pic.setPalette(new Palette(pic));
 		return pic;
 	}
 

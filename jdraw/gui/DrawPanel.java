@@ -49,9 +49,8 @@ public class DrawPanel extends JPanel {
 		return FolderPanel.INSTANCE.showGrid();
 	}
 
-	public final void paintClip(
-		Graphics gr,
-		final boolean drawTransparentColour) {
+	public final void paintClip(Graphics gr,final boolean drawTransparentColour) {
+		
 		Graphics g = GUIUtil.createGraphics(gr);
 		Palette pal = Tool.getCurrentPalette();
 		final int transCol = Tool.getPicture().getTransparent();
@@ -67,9 +66,10 @@ public class DrawPanel extends JPanel {
 		for (int row = 0; row < h; row++) {
 			for (int column = 0; column < w; column++) {
 
-				// pixel
+				//if(column < w-2){// pixel
 				int c = clip.getPixel(column, row);
 				Maglia m = clip.getMaglia(column, row);
+				
 				if (c == transCol) {
 					if (drawTransparentColour) {
 						g.setColor(TRANS_COL);
@@ -112,11 +112,31 @@ public class DrawPanel extends JPanel {
 					g.setColor(Color.darkGray);
 					g.drawRect(x, y, grid, grid);
 				}
+				
+//				// gestisco colonna comandi
+//				
+//				if(column == 7) {
+//					g.setColor(pal.getColour(7).getColour());
+//				}
 				x = x + grid;
 			}
+//				else {
+//					g.setColor(Color.blue);
+//					g.fillRect(x, y, grid, grid);
+//					x = x + grid;
+//				}
+//		}
 			x = 0;
 			y = y + grid;
 		}
+		
+		// disegno la matrice dei comandi
+		paintComandi( gr, w);
+	}
+	
+	private void paintComandi(Graphics gr,int larghezzaMatriceMaglie) {
+		Graphics g = GUIUtil.createGraphics(gr);
+		final int grid = getGrid();
 	}
 
 	public void setPreferredSize(Dimension dim) {

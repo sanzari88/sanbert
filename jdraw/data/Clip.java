@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.tools.Tool;
 
+import Comandi.Comando;
 import jdraw.data.event.ChangeEvent;
 import jdraw.gui.FolderPanel;
 import jdraw.gui.MainFrame;
@@ -31,12 +32,23 @@ public class Clip extends DataObject {
 	protected int[][] data;
 	
 	protected static Maglia [][] matriceMaglie;
+	
+	protected static Comando [][] matriceComandi;
+
 
 	public Clip(final int width, final int height, int background) {
 		data = new int[height][width];
-		matriceMaglie = new Maglia [height][width];
+		//matriceMaglie = new Maglia [height][width];
 		System.out.println("Matrice della maglia creata con successo");
 		fill(background);
+	}
+	
+	public static void makeMagliaAndComandi(int altezza, int larghezza) {
+		matriceMaglie = new Maglia [altezza][larghezza];
+		System.out.println("Matrice della maglia creata con successo");
+		
+		//matriceComandi = new Comando [altezza][4];
+		System.out.println("Matrice dei comandi creata con successo");
 	}
 
 	public final int getTransparentColour() {
@@ -164,6 +176,15 @@ public class Clip extends DataObject {
 	public static void setMatriceMaglie(Maglia[][] matriceMaglie) {
 		Clip.matriceMaglie = matriceMaglie;
 	}
+
+	public static Comando[][] getMatriceComandi() {
+		return matriceComandi;
+	}
+
+	public static void setMatriceComandi(Comando[][] matriceComandi) {
+		Clip.matriceComandi = matriceComandi;
+	}
+	
 	
 	
 }

@@ -53,7 +53,7 @@ public final class ToolPanel extends JPanel {
 	private static final int SKIP = 8;
 
 	private Tool currentTool;
-	private String tipoLavoroSelezionato;
+	private static String tipoLavoroSelezionato;
 	public final ButtonGroup toolGroup = new ButtonGroup();
 	private ToolButton pixelButton;
 	private ToolButton antialiasButton;
@@ -71,7 +71,7 @@ public final class ToolPanel extends JPanel {
 	}
 	
 	
-	public void setMagliaSelezionata(String tipoLavoro) {
+	public static void setMagliaSelezionata(String tipoLavoro) {
 		tipoLavoroSelezionato= tipoLavoro;
 		
 	}
