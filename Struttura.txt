@@ -1,11 +1,89 @@
+###########################################################################
 #-------- Programma di generazione automatico by Raffaele Sanzari --------#
-D0010 = 'abbbbbbbba';
-D0009 = 'bbbbbbbaaa';
-D0008 = 'bbbbbbaabb';
-D0007 = 'bbbbbaabbb';
-D0006 = 'bbbbaabbbb';
-D0005 = 'bbbaabbbbb';
-D0004 = 'baaabbbbbb';
-D0003 = 'babbbbbbbb';
-D0002 = 'bbbbbbbbbb';
-D0001 = 'baaaaaaaab';
+###########################################################################
+
+
+
+
+#-------------------------Selezioni Aghi-----------------------------------#
+
+
+
+D0010 = 'aaaaaaaaaa';
+D0009 = 'aaaaaaaaaa';
+D0008 = 'aaaaaaaaaa';
+D0007 = 'aaaaaaaaaa';
+D0006 = 'aaaaaaaaaa';
+D0005 = 'aaaaaaaaaa';
+D0004 = 'aaaaaaaaaa';
+D0003 = 'aaaaaaaaaa';
+D0002 = 'aaaaaaaaaa';
+D0001 = 'aaaaaaaaaa';
+#------------------------- FINE  Selezioni Aghi-----------------------------#
+
+
+
+#	Inizio generazione parametri, immagliamento, motivi, composizioni  
+
+
+#	Teli 
+
+
+TELO TELI = AGOIT1 - AGOFT1;
+MOT MOTINIZIO = D0001 (D0001 - D0009)
+COINIZIO = MOTINIZIO;
+FRINIZIO = MEM051 : MEM053 (TINIZIO 1'.');
+#-----------------------------------------------------------------------------
+
+
+
+#------ INIZIO GENERAZIONE PARAMETRI PER GUIDAFILO -----------
+
+GTBASE =
+GHBASE =
+GHPARK =
+GXBASE =
+GHPINZ =
+GHPKPZ =
+#--------------------------------------------------------------------------------
+#						SUBROUTINES
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#						ECONOMIZZATORI
+#--------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
+#						FASE ESECUTIVA
+#--------------------------------------------------------------------------------
+ESEGUI
+SET CORTISUP = MEM91;
+SET CORTIRAP1 = MEM92;
+SET CORTIRAP2 = MEM93;
+SET CORGRADAZ = MEM94;
+SET INCRMODE = 1;
+SET AGHITELO = 10;
+SET AGHITOT = AGHITELO + MEM54;
+SET AGHITELO = AGHITOT * 0;
+SET AGOIT1 = MEM51 + AGHITELI;
+SET AGHITELO = AGHITELO + 1;
+SET AGHITELO = AGHITELO * MEM53;
+SET AGOFT1 = AGOIT1 + AGHITELO;
+SET DISTPIN = 9 * FINEZZA;
+SET PASSPIN = 110 * FINEZZA;
+SET PASSPIN = PASSPIN / 254;
+#--------    GESTIONE EZTRACORSA GUIDAFILO	-------
+SET HGF4A = AGOIT1 - MEM304;
+SET PGF4A = AGOFT1 - MEM314;
+SET HPGF4A = PASSPIN * 0;
+SET HPGF4A = DISTPIN + HPGF4A;
+SET HPGF4A = 0 - HPGF4A;
+SET PPGF4A = PASSPIN * 0;
+SET PPGF4A = DISTPIN + PPGF4A;
+SET PPGF4A =  AGHIMAC + PPGF4A;
+ATTIVA GTBASE;
+ATTIVA GXBASE;
+ATTIVA GHPINZ;
+ATTIVA FRINIZIO;
+GOSUB GFPINZE ;
+ATTIVA GHBASE;
+ATTIVA FRINIZIO;
+#--------    INIZIO COMANDI MACCHINA	-------

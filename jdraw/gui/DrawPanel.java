@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import Comandi.Comando;
 import util.gui.GUIUtil;
 
 /*
@@ -23,6 +24,8 @@ import util.gui.GUIUtil;
  */
 
 public class DrawPanel extends JPanel {
+	
+	public static final int NUMERO_COMANDI = 6;
 
 	private static final Color TRANS_COL = new Color(0, 0, 0, 0);
 
@@ -136,7 +139,38 @@ public class DrawPanel extends JPanel {
 	
 	private void paintComandi(Graphics gr,int larghezzaMatriceMaglie) {
 		Graphics g = GUIUtil.createGraphics(gr);
+		Comando[][] matriceComandi= Clip.getMatriceComandi();
+		int altezzaMatrice=matriceComandi.length;
 		final int grid = getGrid();
+		int x = larghezzaMatriceMaglie * grid;
+		int y=0;
+		
+		// linea separazione comandi
+			for(int j=0; j<altezzaMatrice;j++) {
+				g.setColor(Color.WHITE);
+				g.fillRect(x, y, grid-(grid/2), grid);
+				y = y + grid;
+				
+			}
+		
+		x = (larghezzaMatriceMaglie * grid)+(grid/2);
+		y=0;
+		
+		for(int i=0; i<NUMERO_COMANDI-1;i++) {
+			for(int j=0; j<altezzaMatrice;j++) {
+				Comando c = matriceComandi[j][i];
+				if(c==null) {
+					g.setColor(Color.BLACK);
+					g.fillRect(x, y, grid, grid);
+				}
+				g.setColor(Color.LIGHT_GRAY);
+				g.drawRect(x, y, grid, grid);
+				y = y + grid;
+			}
+			x = ((larghezzaMatriceMaglie+i) * grid)+(grid/2);
+			y=0;
+		}
+			
 	}
 
 	public void setPreferredSize(Dimension dim) {
@@ -154,11 +188,12 @@ public class DrawPanel extends JPanel {
 	}
 
 	public Dimension getPreferredSize() {
+		final int grid = getGrid();
 		if (clip == null) {
 			return super.getPreferredSize();
 		}
 		return new Dimension(
-			(getGrid() * clip.getWidth()) + 1,
+			(getGrid() * clip.getWidth()) + 1+ (NUMERO_COMANDI * grid),
 			(getGrid() * clip.getHeight()) + 1);
 	}
 

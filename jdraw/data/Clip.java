@@ -7,6 +7,7 @@ import javax.tools.Tool;
 
 import Comandi.Comando;
 import jdraw.data.event.ChangeEvent;
+import jdraw.gui.DrawPanel;
 import jdraw.gui.FolderPanel;
 import jdraw.gui.MainFrame;
 import magliera.puntoMaglia.Maglia;
@@ -47,7 +48,7 @@ public class Clip extends DataObject {
 		matriceMaglie = new Maglia [altezza][larghezza];
 		System.out.println("Matrice della maglia creata con successo");
 		
-		//matriceComandi = new Comando [altezza][4];
+		matriceComandi = new Comando [altezza][DrawPanel.NUMERO_COMANDI-1];
 		System.out.println("Matrice dei comandi creata con successo");
 	}
 
