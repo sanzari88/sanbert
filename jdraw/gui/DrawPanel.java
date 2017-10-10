@@ -25,7 +25,7 @@ import util.gui.GUIUtil;
 
 public class DrawPanel extends JPanel {
 	
-	public static final int NUMERO_COMANDI = 6;
+	public static final int NUMERO_COMANDI = 6; // include 1 unità per il divisiorio... quindi i comandi sono 5
 
 	private static final Color TRANS_COL = new Color(0, 0, 0, 0);
 
@@ -59,7 +59,7 @@ public class DrawPanel extends JPanel {
 		final int transCol = Tool.getPicture().getTransparent();
 		final boolean showGrid = showGrid();
 
-		final int w = clip.getWidth();
+		final int w = clip.getWidth()-DrawPanel.NUMERO_COMANDI; // tolgo la parte dei comandi che la stampo dopo
 		final int h = clip.getHeight();
 		final int grid = getGrid();
 
@@ -138,6 +138,7 @@ public class DrawPanel extends JPanel {
 	}
 	
 	private void paintComandi(Graphics gr,int larghezzaMatriceMaglie) {
+		Palette pal = Tool.getCurrentPalette();
 		Graphics g = GUIUtil.createGraphics(gr);
 		Comando[][] matriceComandi= Clip.getMatriceComandi();
 		int altezzaMatrice=matriceComandi.length;
@@ -155,13 +156,35 @@ public class DrawPanel extends JPanel {
 		
 		x = (larghezzaMatriceMaglie * grid)+(grid/2);
 		y=0;
-		
+		aggiornaColoreGuidafilo(matriceComandi);
 		for(int i=0; i<NUMERO_COMANDI-1;i++) {
 			for(int j=0; j<altezzaMatrice;j++) {
 				Comando c = matriceComandi[j][i];
 				if(c==null) {
 					g.setColor(Color.BLACK);
 					g.fillRect(x, y, grid, grid);
+				}
+				else {
+					if(c.getComando().equalsIgnoreCase("Guidafilo")) {
+						g.setColor(pal.getColour(c.getColore()).getColour());
+						g.fillRect(x, y, grid, grid);
+						if(c.getValue()!=null && c.getValue().length()>0) {
+						g.setColor(Color.white);
+						g.drawString(c.getValue(), x,y+grid);
+						}
+					}
+					else if(c.getComando().equalsIgnoreCase("Gradazione")) {
+						g.setColor(pal.getColour(c.getColore()).getColour());
+						g.fillRect(x, y, grid, grid);
+					}
+					else if(c.getComando().equalsIgnoreCase("Tirapezza")) {
+						g.setColor(pal.getColour(c.getColore()).getColour());
+						g.fillRect(x, y, grid, grid);
+					}
+					else if(c.getComando().equalsIgnoreCase("Velocita")) {
+						g.setColor(pal.getColour(c.getColore()).getColour());
+						g.fillRect(x, y, grid, grid);
+					}
 				}
 				g.setColor(Color.LIGHT_GRAY);
 				g.drawRect(x, y, grid, grid);
@@ -171,6 +194,16 @@ public class DrawPanel extends JPanel {
 			y=0;
 		}
 			
+	}
+	
+	private void aggiornaColoreGuidafilo(Comando[][] matriceComandi) {
+		for(int i=0;i<matriceComandi.length;i++) {
+			if(matriceComandi[i][1]!=null && matriceComandi[i][1].getValue()!=null)
+				for(int j=0;i<matriceComandi.length;j++) {
+					if(matriceComandi[j][1]!=null && matriceComandi[i][1].getColore()==matriceComandi[j][1].getColore())
+						matriceComandi[i][1].setValue(matriceComandi[j][1].getValue());
+				}
+		}
 	}
 
 	public void setPreferredSize(Dimension dim) {

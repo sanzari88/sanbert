@@ -4,6 +4,7 @@ import jdraw.data.Clip;
 import jdraw.data.Palette;
 import jdraw.data.Picture;
 import jdraw.data.Pixel;
+import jdraw.gui.DrawPanel;
 import jdraw.gui.Tool;
 import magliera.puntoMaglia.TipoLavoroEnum;
 
@@ -48,7 +49,7 @@ public final class DrawFill extends Undoable {
 		ArrayList points = new ArrayList();
 		points.add(new Point(x, y));
 		ArrayList pixels = new ArrayList();
-		final int width = frame.getWidth();
+		final int width = frame.getWidth()-DrawPanel.NUMERO_COMANDI;
 		final int height = frame.getHeight();
 		do {
 			Point p = (Point) points.remove(0);

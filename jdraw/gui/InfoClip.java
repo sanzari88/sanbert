@@ -55,24 +55,49 @@ public final class InfoClip extends FloatingClip {
 
 	private String getInfo(MouseEvent e) {
 		StringBuffer buf = new StringBuffer();
+		int inizioComandi=Clip.getLarghezzaDisegno();
 		Point p = Tool.getRealPixel(e);
 		if (p == null) {
 			return "";
 		}
-		buf.append("R: "+p.y);
-		buf.append(" , ");
-		buf.append("A: "+p.x);
+		if(p.x<inizioComandi) {
+			buf.append("R: "+p.y);
+			buf.append(" , ");
+			buf.append("A: "+p.x);
+			}
+		else {
+			int sceltaComando= p.x-inizioComandi;
+			switch (sceltaComando) {
+			case 1:buf.append("Guidafilo");
+				break;
+			case 2:buf.append("Gradazione");
+			break;
+			case 3:buf.append("Tirapezza");
+			break;
+			case 4:buf.append("Velocita");
+			break;
+
+			default:
+				buf.append("Colonna non definita");
+				break;
+			}
+		}
 		return buf.toString();
 	}
 
 	private void updateInfo(MouseEvent e) {
 		info.setText(getInfo(e));
+		int dimensioneDisegno=Clip.getLarghezzaDisegno();
 		Dimension dim = getPreferredSize();
 		Point p = translate(e);		
 		int x = p.x + X_OFFSET;
 		int y = p.y + Y_OFFSET;
 		
-		defineClip(x, y, dim.width, dim.height);
+		Point p2 = Tool.getRealPixel(e);
+		if(p2 != null && p2.x>dimensioneDisegno)
+			defineClip(x-100, y, dim.width, dim.height); // posizione di dove stampera le info del mouse
+		else
+			defineClip(x, y, dim.width, dim.height); // posizione di dove stampera le info del mouse
 	}
 
 	public Integer getLayer() {

@@ -11,6 +11,7 @@ import jdraw.gui.DrawPanel;
 import jdraw.gui.FolderPanel;
 import jdraw.gui.MainFrame;
 import magliera.puntoMaglia.Maglia;
+import util.Util;
 
 /*
  * Clip.java - created on 30.10.2003
@@ -38,9 +39,8 @@ public class Clip extends DataObject {
 
 
 	public Clip(final int width, final int height, int background) {
-		data = new int[height][width];
+		data = new int[height][width+DrawPanel.NUMERO_COMANDI];
 		//matriceMaglie = new Maglia [height][width];
-		System.out.println("Matrice della maglia creata con successo");
 		fill(background);
 	}
 	
@@ -131,12 +131,56 @@ public class Clip extends DataObject {
 		System.out.println("Punto maglia "+m.getTipoLavoro()+" inserito correttamente nella matrice delle maglie");
 		System.out.println("X: "+m.getX() +" Y: "+m.getY());
 	}
+	
+	private void setComandoDestra(int x, int y, int colore) {
+		Comando c = new Comando();
+		x=x-Clip.getLarghezzaDisegno();
+		// con X = 0 non avrò mai nulla...è il separatore
+		
+		switch (x) {
+		case 1:{
+			//Guidafilo
+			c.setComando("Guidafilo");
+			c.setColore(colore);
+		}
+			break;
+		case 2:{
+			c.setComando("Gradazione");
+			c.setColore(colore);
+		}
+			break;
+		case 3:{
+			c.setComando("Tirapezza");
+			c.setColore(colore);
+		}
+			break;
+		case 4:{
+			c.setComando("Velocita");
+			c.setColore(colore);
+		}
+			break;
+
+		default:
+			break;
+		}
+		matriceComandi[y][x] = c;
+		System.out.println("Comando inserito correttamente nalla matrice comandi");
+	}
 
 	public void setPixel(int x, int y, int col) {
+		if(!Util.isComandoDestra(x)) {
 			data[y][x] = col;
 			setMaglia(x, y, col, jdraw.gui.Tool.getTipoLavoro());
 			notifyDataListeners(
 				new ChangeEvent(this, CLIP_PIXEL_CHANGED, x, y, col));
+		}
+		else {
+			data[y][x] = col;
+			setComandoDestra( x,  y,  col);
+			notifyDataListeners(
+					new ChangeEvent(this, CLIP_PIXEL_CHANGED, x, y, col));
+			
+		}
 		
 	}
 
@@ -184,6 +228,10 @@ public class Clip extends DataObject {
 
 	public static void setMatriceComandi(Comando[][] matriceComandi) {
 		Clip.matriceComandi = matriceComandi;
+	}
+	
+	public static int getLarghezzaDisegno() {
+		return matriceMaglie.length;
 	}
 	
 	

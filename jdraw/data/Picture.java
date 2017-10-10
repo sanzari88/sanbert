@@ -13,6 +13,7 @@ import jdraw.Main;
 import jdraw.data.event.ChangeEvent;
 import jdraw.gio.ImageReader;
 import jdraw.gio.PNGWriter;
+import jdraw.gui.DrawPanel;
 import jdraw.gui.Tool;
 import magliera.puntoMaglia.TipoLavoroEnum;
 import util.Log;

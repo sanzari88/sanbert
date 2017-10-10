@@ -65,12 +65,19 @@ public abstract class Tool implements KeyEventDispatcher, DrawMouseListener {
 			StatusPanel.INSTANCE.drawInfo(null);
 		}
 		else {
-			StringBuffer buf = new StringBuffer("( R:");
+			StringBuffer buf;
+			int larghezzaDisegno=Clip.getLarghezzaDisegno();
+			if(p.x<larghezzaDisegno) {
+			 buf = new StringBuffer("( R:");
 			buf.append(p.y+1);
 			buf.append(", C: ");
 			buf.append(p.x+1);
 			buf.append(") #");
 			buf.append(getCurrentFrame().getPixel(p.x, p.y));
+			}
+			else {
+				 buf = new StringBuffer(" Descrivere il tipo di comando");
+			}
 			StatusPanel.INSTANCE.drawInfo(buf.toString());
 		}
 	}
@@ -177,10 +184,10 @@ public abstract class Tool implements KeyEventDispatcher, DrawMouseListener {
 		final int grid = getGrid();
 		final int maxX = getPictureWidth()-1;
 		final int maxY = getPictureHeight()-1;
-		x = (x / grid) ;		//  valori corretti x avere indici che partono dal basso a sx
+		x = ((x+(grid/2)) / grid) ;		//  valori corretti x avere indici che partono dal basso a sx
 		y = maxY-(y / grid);
 
-		if ((x < 0) || (y < 0) || (x > maxX) || (y > maxY)) {
+		if ((x < 0) || (y < 0) || (x > (maxX+DrawPanel.NUMERO_COMANDI)) || (y > maxY) || (x==maxX+1)) { // aggiungo extra x gestire i comandi macchina
 			return null;
 		}
 		return new Point(x, y);
