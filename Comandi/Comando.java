@@ -3,7 +3,7 @@ package Comandi;
 public class Comando {
 	
 	private String comando;
-	private String value;
+	private String value="";
 	private int colore;
 	
 	public Comando() {}

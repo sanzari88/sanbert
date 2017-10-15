@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import Comandi.Comando;
 import jdraw.data.Palette;
 import magliera.puntoMaglia.Maglia;
 import magliera.puntoMaglia.TipoLavoroEnum;
@@ -13,30 +14,31 @@ import magliera.puntoMaglia.TipoLavoroEnum;
 public class Compilatore {
 	
 	private Maglia[][] matriceMaglia;
+	private Comando[][] matriceComandi;
 	private HashMap <Integer,String> tabellaColori;
 	private ArrayList<LavoroCaduta> righeLavoro;
 	private ArrayList<TrasportoCaduta> righeTrasporto;
 	
-	public Compilatore(Maglia[][] matriceMaglia) {
+	public Compilatore(Maglia[][] matriceMaglia,Comando[][] matriceComandi) {
 		this.matriceMaglia= matriceMaglia;
+		this.matriceComandi=matriceComandi;
 		tabellaColori = Palette.getTabellaColoriMaglia();
-//		tabellaColori.put(16, "a");
-//		tabellaColori.put(24, "b");
 		// capovolgendo la matrice ho il disegno in ordine di istruzioni partendo dal basso, quindi da 1
 		Maglia [][] matriceMaglieTmp = Utility.capovolgiMatrice(matriceMaglia);
-		elabora(matriceMaglieTmp);
+		elabora(matriceMaglieTmp,this.matriceComandi);
 	}
 	
 	public String getProgrammaElaborato() {
 		return "";
 	}
 	
-	private void elabora(Maglia[][] matriceMaglia) {
+	
+	private void elabora(Maglia[][] matriceMaglia,Comando[][] matriceComandi) {
 		
-		righeLavoro = creaComandiLavoro(matriceMaglia);
+		righeLavoro = creaComandiLavoro(matriceMaglia,matriceComandi);
 		System.out.println("Comandi lavoro creati");
 		
-		creaFileStruttura();
+		creaFileStruttura(getGuidafili(matriceComandi));
 		System.out.println("File struttura creato");
 		
 		righeTrasporto = creaComandiTrasporti(matriceMaglia);
@@ -51,6 +53,18 @@ public class Compilatore {
 		System.out.println("File comandi generato correttamente");
 	}
 	
+	private ArrayList<Integer> getGuidafili(Comando[][] matriceComandi) {
+		ArrayList<Integer> guidafili= new ArrayList<>();
+		
+		for(int i=0;i<matriceComandi.length;i++) {
+			if(!guidafili.contains(Integer.parseInt(matriceComandi[i][1].getValue()))) {
+				guidafili.add(Integer.parseInt(matriceComandi[i][1].getValue()));
+			}
+		}
+		
+		return guidafili;
+	}
+
 	private void creaFileComandi(String comandiMacchina) {
 		File f = new File("Comandi.txt");
 		try {
@@ -114,7 +128,7 @@ public class Compilatore {
 		return righeTrasporto;
 	}
 
-	private boolean creaFileStruttura() {
+	private boolean creaFileStruttura(ArrayList<Integer> guidafili) {
 		File f = new File("Struttura.txt");
 		try {
 			PrintStream ps = new PrintStream(f);
@@ -126,6 +140,7 @@ public class Compilatore {
 			
 			
 			int nr = matriceMaglia.length-1;
+			int righeDisegno=matriceMaglia.length;
 			int nc = matriceMaglia[0].length;
 			int indiceDisegno= nr;
 			
@@ -156,17 +171,31 @@ public class Compilatore {
 			ps.println("#	Inizio generazione parametri, immagliamento, motivi, composizioni  \n\n");
 			ps.println("#	Teli \n\n");
 			ps.println("TELO TELI = AGOIT1 - AGOFT1;");
-			ps.println("MOT MOTINIZIO = D0001 (D0001 - "+Utility.normalizzaIndiceDisegno(nr)+")");
+			ps.println("MOT MOTINIZIO = D0001 (D0001 - "+Utility.normalizzaIndiceDisegno(righeDisegno)+")");
 			ps.println("COINIZIO = MOTINIZIO;");
 			ps.println("FRINIZIO = MEM051 : MEM053 (TINIZIO 1'.');");
 			ps.println("#-----------------------------------------------------------------------------\n\n\n");
 			ps.println("#------ INIZIO GENERAZIONE PARAMETRI PER GUIDAFILO -----------\n");
-			ps.println("GTBASE =");
-			ps.println("GHBASE =");
-			ps.println("GHPARK =");
-			ps.println("GXBASE =");
-			ps.println("GHPINZ =");
-			ps.println("GHPKPZ =");
+			String gtbase="";
+			String ghbase="";
+			String ghpark="";
+			String gxbase="";
+			String ghpinz="";
+			String ghpkz="";
+			for(Integer guidafilo:guidafili) {
+				gtbase=gtbase+guidafilo+"A N TELI1, ";
+				ghbase=ghbase+guidafilo+"A+HGF"+guidafilo+"A, ";
+				ghpark=ghpark+guidafilo+"A+PGF"+guidafilo+"A, ";
+				gxbase=gxbase+guidafilo+"A [MEM30"+guidafilo+"-MEM31"+guidafilo+"], ";
+				ghpinz=ghpinz+guidafilo+"A+HPGF"+guidafilo+"A, ";
+				ghpkz=ghpkz+guidafilo+"A+PPGF"+guidafilo+"A, ";
+			}
+			ps.println("GTBASE ="+gtbase.substring(0, gtbase.length()-2)+";");
+			ps.println("GHBASE ="+ghbase.substring(0, ghbase.length()-2)+";");
+			ps.println("GHPARK ="+ghpark.substring(0, ghpark.length()-2)+";");
+			ps.println("GXBASE ="+gxbase.substring(0, gxbase.length()-2)+";");
+			ps.println("GHPINZ ="+ghpinz.substring(0, ghpinz.length()-2)+";");
+			ps.println("GHPKPZ ="+ghpkz.substring(0, ghpkz.length()-2)+";");
 			ps.println("#--------------------------------------------------------------------------------");
 			ps.println("#						SUBROUTINES");
 			ps.println("#--------------------------------------------------------------------------------");
@@ -194,15 +223,16 @@ public class Compilatore {
 			ps.println("SET PASSPIN = PASSPIN / 254;");
 			
 			ps.println("#--------    GESTIONE EZTRACORSA GUIDAFILO	-------");
-			
-			ps.println("SET HGF4A = AGOIT1 - MEM304;");
-			ps.println("SET PGF4A = AGOFT1 - MEM314;");
-			ps.println("SET HPGF4A = PASSPIN * 0;");
-			ps.println("SET HPGF4A = DISTPIN + HPGF4A;");
-			ps.println("SET HPGF4A = 0 - HPGF4A;");
-			ps.println("SET PPGF4A = PASSPIN * 0;");
-			ps.println("SET PPGF4A = DISTPIN + PPGF4A;");
-			ps.println("SET PPGF4A =  AGHIMAC + PPGF4A;");
+			for(Integer guidafilo:guidafili) {
+			ps.println("SET HGF"+guidafilo+"A = AGOIT1 - MEM30"+guidafilo+";");
+			ps.println("SET PGF"+guidafilo+"A = AGOFT1 - MEM31"+guidafilo+";");
+			ps.println("SET HPGF"+guidafilo+"A = PASSPIN * 0;");
+			ps.println("SET HPGF"+guidafilo+"A = DISTPIN + HPGF"+guidafilo+"A;");
+			ps.println("SET HPGF"+guidafilo+"A = 0 - HPGF"+guidafilo+"A;");
+			ps.println("SET PPGF"+guidafilo+"A = PASSPIN * 0;");
+			ps.println("SET PPGF"+guidafilo+"A = DISTPIN + PPGF"+guidafilo+"A;");
+			ps.println("SET PPGF"+guidafilo+"A =  AGHIMAC + PPGF"+guidafilo+"A;");
+			}
 			
 			ps.println("ATTIVA GTBASE;");
 			ps.println("ATTIVA GXBASE;");
@@ -224,16 +254,14 @@ public class Compilatore {
 		return true;
 	}
 	
-	private ArrayList<LavoroCaduta> creaComandiLavoro(Maglia[][] matriceMaglia) {
+	private ArrayList<LavoroCaduta> creaComandiLavoro(Maglia[][] matriceMaglia,Comando[][] matriceComandi) {
 		ArrayList<LavoroCaduta> righeLavoro = new ArrayList<>();
 			int nr = matriceMaglia.length;
 			
 			for(int i=0;i< nr; i++) {
-				LavoroCaduta lavoro =getMaglieLavoro(matriceMaglia[i], i);
+				LavoroCaduta lavoro =getMaglieLavoro(matriceMaglia[i], i,matriceComandi[i]);
 				righeLavoro.add(lavoro);
 			}
-			
-		
 		
 		return righeLavoro;
 	}
@@ -243,7 +271,7 @@ public class Compilatore {
 		return tabellaColori.get(colore);
 	}
 	
-	private LavoroCaduta getMaglieLavoro(Maglia[] rigaMatriceMaglia, int rigaDisegno) {
+	private LavoroCaduta getMaglieLavoro(Maglia[] rigaMatriceMaglia, int rigaDisegno, Comando[] rigaComandi) {
 		String colore ="";
 		ArrayList<String> colors = new ArrayList<>();
 		String ant = "";
@@ -251,6 +279,25 @@ public class Compilatore {
 		String inglA ="";
 		String inglP = "";
 		String unita = "";
+		int tirapezza=1;
+		int velocita=1;
+		int gradazione=1;
+		int guidafilo=1;
+		
+		for(Comando c:rigaComandi) {
+			if(c!=null && c.getComando().equalsIgnoreCase("Guidafilo")) {
+				guidafilo=Integer.parseInt(c.getValue());
+			}
+			else if(c!=null &&c.getComando().equalsIgnoreCase("Gradazione")) {
+				gradazione=Integer.parseInt(c.getValue());
+			}
+			else if(c!=null &&c.getComando().equalsIgnoreCase("Velocita")) {
+				velocita=Integer.parseInt(c.getValue());
+			}
+			else if(c!=null &&c.getComando().equalsIgnoreCase("Tirapezza")) {
+				tirapezza=Integer.parseInt(c.getValue());
+			}
+		}
 		ArrayList<Colore> colori = new ArrayList<>();
 		LavoroCaduta lavoro = new LavoroCaduta();
 		
@@ -377,10 +424,11 @@ public class Compilatore {
 		lavoro.setInglesePost(inglP);
 		lavoro.setUnita(unita);
 		lavoro.setRigaDisegno(rigaDisegno);
-		lavoro.setGuidafilo(4);
-		lavoro.setGradazione(5);
+		lavoro.setGuidafilo(guidafilo);
+		lavoro.setGradazione(gradazione);
 		lavoro.setSpostamento(0);
-		lavoro.setTirapezza(5);
+		lavoro.setTirapezza(tirapezza);
+		lavoro.setVelocita(velocita);
 		
 		return lavoro;
 	}

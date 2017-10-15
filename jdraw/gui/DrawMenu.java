@@ -28,6 +28,7 @@ public final class DrawMenu extends JMenuBar {
 		createFileMenu();
 		createEditMenu();
 		createViewMenu();
+		createBalzaMenu();
 //		createFrameMenu();
 //		createPaletteMenu();
 //		createHelpMenu();
@@ -108,6 +109,16 @@ public final class DrawMenu extends JMenuBar {
 		menu.addSeparator();
 		menu.add(
 			new DrawMenuItem(DrawAction.getAction(ViewAnimationAction.class)));
+		add(menu);
+	}
+	
+	private void createBalzaMenu() {
+		JMenu menu = new JMenu("Balze");
+		menu.setMnemonic('b');
+
+		menu.add(new DrawMenuItem(DrawAction.getAction(NewBalzeAction.class)));
+		
+
 		add(menu);
 	}
 

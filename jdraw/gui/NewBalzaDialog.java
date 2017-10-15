@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,52 +25,48 @@ import javax.swing.event.DocumentListener;
 import util.gui.WidgetFactory;
 
 /*
- * SizeDialog.java - created on 11-10-2017
+ * SizeDialog.java - created on 30.10.2003
  * 
- * @author Sanzari Raffaele 
+ * @author Michaela Behling
  */
 
-public class GuidafiloDialog extends DrawDialog implements DocumentListener {
+public class NewBalzaDialog extends DrawDialog implements DocumentListener {
 
-	private static final int MAX_GUID = 8;
-	//private static final int MAX_HEIGHT = 768;
+	private static final int MAX_WIDTH = 1024;
+	private static final int MAX_HEIGHT = 768;
 
-	private Dimension dim = Tool.getPictureDimension();
+	String[] bookTitles = new String[] {"Costa 1x1", "Costa 2x1",
+            "Tubolare","Costa 1x1 + elastico", "Costa 2x1 + elastico"};
+	private final JComboBox costina =new JComboBox(bookTitles);
 
-	private final JTextField guidafiloNUmber =new JTextField();
 
-//	private final JTextField heightField =
-//		new JTextField(String.valueOf(dim.height), 4);
+	public NewBalzaDialog() {
+		super("Seleziona tipo balza:");
 
-	public GuidafiloDialog() {
-		super("Inserisci numero guidafilo:");
-
-		WidgetFactory.addFocusAdapter(guidafiloNUmber);
-//		WidgetFactory.addFocusAdapter(heightField);
+		WidgetFactory.addFocusAdapterJComboBox(costina);
 		setDefaultBorder();
 		setModal(true);
 		JPanel p = new JPanel(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 
-		guidafiloNUmber.getDocument().addDocumentListener(this);
-//		heightField.getDocument().addDocumentListener(this);
-
+		//costina.getDocument().addDocumentListener(this);
+		//costina.add("");
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.insets = new Insets(0, 2, 2, 2);
 		gc.gridwidth = 2;
-		JLabel text = new JLabel("<html><b>Seleziona Guidafilo:</b></html>");
+		JLabel text = new JLabel("<html><b>Tipo balza:</b></html>");
 		text.setBorder(new EmptyBorder(0, 0, 10, 0));
 		p.add(text, gc);
 
 		gc.gridwidth = 1;
 		gc.gridy++;
-		JLabel l = new JLabel("Guidafilo: ");
+		JLabel l = new JLabel("Balza/Inizio: ");
 		p.add(l, gc);
 
 		gc.gridx++;
-		p.add(guidafiloNUmber, gc);
+		p.add(costina, gc);
 
 //		gc.gridx = 0;
 //		gc.gridy++;
@@ -87,25 +84,16 @@ public class GuidafiloDialog extends DrawDialog implements DocumentListener {
 		addRightButton(getCancelButton());
 		addButtonPanel();
 
-		setFirstFocusComponent(guidafiloNUmber);
+		setFirstFocusComponent(costina);
+	}
+	
+	public String getCostina() {
+		String c=(String) costina.getSelectedItem();
+		return c;
 	}
 
-	public String getGuidafilo() {
-		return guidafiloNUmber.getText();
-	}
 
 	private void checkInput() {
-		boolean isValid = true;
-		try {
-			dim.width = Integer.parseInt(guidafiloNUmber.getText().trim());
-			//dim.height = Integer.parseInt(heightField.getText().trim());
-
-			isValid =(dim.width > 0)&& (dim.width < MAX_GUID);
-		}
-		catch (NumberFormatException e) {
-			isValid = false;
-		}
-		getApproveButton().setEnabled(isValid);
 	}
 
 	public void changedUpdate(DocumentEvent e) {

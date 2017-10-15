@@ -42,23 +42,56 @@ public final class PixelTool extends Tool {
 		int x =p.x-dimensioneDisegno;
 		int y = Util.getYInvertita(p.y);
 		Comando[][] matriceComandi= Clip.getMatriceComandi();
+		Comando c;
 		
 		switch (x) {
 		case 1:
 			GuidafiloDialog d = new GuidafiloDialog();
 			d.open();
 			
-			Comando c =matriceComandi[y][x];
+			c =matriceComandi[y][x];
 			if(d.getResult()==1) {
 				c.setValue(d.getGuidafilo());
 				matriceComandi[y][x]=c;
 			}
+			released(1, p);
+			aggiornaValoriComandi(matriceComandi,1,c);
 			break;
 		case 2:
+			GradazioneDialog g = new GradazioneDialog();
+			g.open();
+			
+			c =matriceComandi[y][x];
+			if(g.getResult()==1) {
+				c.setValue(g.getGradazione());
+				matriceComandi[y][x]=c;
+			}
+			released(1, p);
+			aggiornaValoriComandi(matriceComandi,2,c);
 			break;
 		case 3:
+			TirapezzaDialog t = new TirapezzaDialog();
+			t.open();
+			
+			c =matriceComandi[y][x];
+			if(t.getResult()==1) {
+				c.setValue(t.getTirapezza());
+				matriceComandi[y][x]=c;
+			}
+			released(1, p);
+			aggiornaValoriComandi(matriceComandi,3,c);
 			break;
 		case 4:
+			VelocitaDialog v = new VelocitaDialog();
+			v.open();
+			
+			c =matriceComandi[y][x];
+			if(v.getResult()==1) {
+				c.setValue(v.getVelocita());
+				matriceComandi[y][x]=c;
+			}
+			released(1, p);
+			aggiornaValoriComandi(matriceComandi,4,c);
 			break;
 		case 5:
 			break;
@@ -66,6 +99,14 @@ public final class PixelTool extends Tool {
 		default:
 			break;
 		}
+	}
+	
+	private void aggiornaValoriComandi(Comando[][] matriceComandi, int indexComando,Comando c) {
+		for(int i=0;i<matriceComandi.length;i++) {
+			if(matriceComandi[i][indexComando]!=null && matriceComandi[i][indexComando].getColore()==c.getColore())
+				matriceComandi[i][indexComando].setValue(c.getValue());
+		}
+		
 	}
 
 	public void pressed(int button, Point p) { // Cattura la pressione del mouse

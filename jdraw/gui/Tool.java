@@ -182,12 +182,17 @@ public abstract class Tool implements KeyEventDispatcher, DrawMouseListener {
 
 	public static final Point getRealPixel(int x, int y) {
 		final int grid = getGrid();
-		final int maxX = getPictureWidth()-1;
+		final int maxX = getPictureWidth()-1; // dimensione del disegno esclusa parte destra
 		final int maxY = getPictureHeight()-1;
-		x = ((x+(grid/2)) / grid) ;		//  valori corretti x avere indici che partono dal basso a sx
+		int larghPixel= (grid*maxX)+grid;
+		int larghPixelConDivisore=larghPixel+(grid); // aggiungo dividore grafico
+		if(x<larghPixel)
+			x = x / grid ;		//  valori corretti x avere indici che partono dal basso a sx
+		else
+			x = ((x-(grid)) / grid )+1;	
 		y = maxY-(y / grid);
 
-		if ((x < 0) || (y < 0) || (x > (maxX+DrawPanel.NUMERO_COMANDI)) || (y > maxY) || (x==maxX+1)) { // aggiungo extra x gestire i comandi macchina
+		if ((x < 0) || (y < 0) || (x > (maxX+DrawPanel.NUMERO_COMANDI)) || (y > maxY) || (x>larghPixel && x<larghPixelConDivisore)) { // aggiungo extra x gestire i comandi macchina
 			return null;
 		}
 		return new Point(x, y);
@@ -294,8 +299,6 @@ public abstract class Tool implements KeyEventDispatcher, DrawMouseListener {
 		isDragged = true;
 		Point p = getRealPixel(e);
 		
-		if(p.y == 7)
-			System.out.println("raff_drag");
 		int button = getButton(e.getModifiers());
 		//if (!skipPoint(DRAGGED, p)) {
 			if (p != null) {
@@ -336,7 +339,7 @@ public abstract class Tool implements KeyEventDispatcher, DrawMouseListener {
 	}
 
 	public final void mousePressed(MouseEvent e) {
-		if (isValidMousePressing(e)) {
+	//	if (isValidMousePressing(e)) { 		controllo sulla valida del tasto del mouse
 			lastModifiers = e.getModifiers();
 			isDragged = false;
 			Point p = getRealPixel(e);
@@ -345,7 +348,7 @@ public abstract class Tool implements KeyEventDispatcher, DrawMouseListener {
 				drawInfo(p);
 				pressed(button, p);
 			}
-		}
+		//}
 	}
 
 	public final void mouseReleased(MouseEvent e) {

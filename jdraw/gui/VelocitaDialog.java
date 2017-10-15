@@ -29,29 +29,29 @@ import util.gui.WidgetFactory;
  * @author Sanzari Raffaele 
  */
 
-public class GuidafiloDialog extends DrawDialog implements DocumentListener {
+public class VelocitaDialog extends DrawDialog implements DocumentListener {
 
-	private static final int MAX_GUID = 8;
+	private static final int MAX_VEL = 20;
 	//private static final int MAX_HEIGHT = 768;
 
 	private Dimension dim = Tool.getPictureDimension();
 
-	private final JTextField guidafiloNUmber =new JTextField();
+	private final JTextField velocitaNUmber =new JTextField();
 
 //	private final JTextField heightField =
 //		new JTextField(String.valueOf(dim.height), 4);
 
-	public GuidafiloDialog() {
-		super("Inserisci numero guidafilo:");
+	public VelocitaDialog() {
+		super("Inserisci velocita:");
 
-		WidgetFactory.addFocusAdapter(guidafiloNUmber);
+		WidgetFactory.addFocusAdapter(velocitaNUmber);
 //		WidgetFactory.addFocusAdapter(heightField);
 		setDefaultBorder();
 		setModal(true);
 		JPanel p = new JPanel(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 
-		guidafiloNUmber.getDocument().addDocumentListener(this);
+		velocitaNUmber.getDocument().addDocumentListener(this);
 //		heightField.getDocument().addDocumentListener(this);
 
 		gc.gridx = 0;
@@ -59,17 +59,17 @@ public class GuidafiloDialog extends DrawDialog implements DocumentListener {
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.insets = new Insets(0, 2, 2, 2);
 		gc.gridwidth = 2;
-		JLabel text = new JLabel("<html><b>Seleziona Guidafilo:</b></html>");
+		JLabel text = new JLabel("<html><b>Seleziona Velocita:</b></html>");
 		text.setBorder(new EmptyBorder(0, 0, 10, 0));
 		p.add(text, gc);
 
 		gc.gridwidth = 1;
 		gc.gridy++;
-		JLabel l = new JLabel("Guidafilo: ");
+		JLabel l = new JLabel("Velocita: ");
 		p.add(l, gc);
 
 		gc.gridx++;
-		p.add(guidafiloNUmber, gc);
+		p.add(velocitaNUmber, gc);
 
 //		gc.gridx = 0;
 //		gc.gridy++;
@@ -87,20 +87,20 @@ public class GuidafiloDialog extends DrawDialog implements DocumentListener {
 		addRightButton(getCancelButton());
 		addButtonPanel();
 
-		setFirstFocusComponent(guidafiloNUmber);
+		setFirstFocusComponent(velocitaNUmber);
 	}
 
-	public String getGuidafilo() {
-		return guidafiloNUmber.getText();
+	public String getVelocita() {
+		return velocitaNUmber.getText();
 	}
 
 	private void checkInput() {
 		boolean isValid = true;
 		try {
-			dim.width = Integer.parseInt(guidafiloNUmber.getText().trim());
+			dim.width = Integer.parseInt(velocitaNUmber.getText().trim());
 			//dim.height = Integer.parseInt(heightField.getText().trim());
 
-			isValid =(dim.width > 0)&& (dim.width < MAX_GUID);
+			isValid =(dim.width > 0)&& (dim.width < MAX_VEL);
 		}
 		catch (NumberFormatException e) {
 			isValid = false;

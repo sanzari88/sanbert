@@ -78,7 +78,7 @@ public final class InfoClip extends FloatingClip {
 			break;
 
 			default:
-				buf.append("Colonna non definita");
+				buf.append("");
 				break;
 			}
 		}

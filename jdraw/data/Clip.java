@@ -10,6 +10,7 @@ import jdraw.data.event.ChangeEvent;
 import jdraw.gui.DrawPanel;
 import jdraw.gui.FolderPanel;
 import jdraw.gui.MainFrame;
+import jdraw.gui.PixelTool;
 import magliera.puntoMaglia.Maglia;
 import util.Util;
 
@@ -48,7 +49,7 @@ public class Clip extends DataObject {
 		matriceMaglie = new Maglia [altezza][larghezza];
 		System.out.println("Matrice della maglia creata con successo");
 		
-		matriceComandi = new Comando [altezza][DrawPanel.NUMERO_COMANDI-1];
+		matriceComandi = new Comando [altezza][DrawPanel.NUMERO_COMANDI];
 		System.out.println("Matrice dei comandi creata con successo");
 	}
 
@@ -134,6 +135,7 @@ public class Clip extends DataObject {
 	
 	private void setComandoDestra(int x, int y, int colore) {
 		Comando c = new Comando();
+		int comando=1;
 		x=x-Clip.getLarghezzaDisegno();
 		// con X = 0 non avrò mai nulla...è il separatore
 		
@@ -147,24 +149,51 @@ public class Clip extends DataObject {
 		case 2:{
 			c.setComando("Gradazione");
 			c.setColore(colore);
+			comando=2;
 		}
 			break;
 		case 3:{
 			c.setComando("Tirapezza");
 			c.setColore(colore);
+			comando=3;
 		}
 			break;
 		case 4:{
 			c.setComando("Velocita");
 			c.setColore(colore);
+			comando=4;
 		}
 			break;
 
 		default:
 			break;
 		}
+		if(matriceComandi[y][x]!=null) {
+			String valore= matriceComandi[y][x].getValue();
+			c.setValue(valore);
+		}
 		matriceComandi[y][x] = c;
+		aggiornaValoriComandi(matriceComandi,comando,colore);
 		System.out.println("Comando inserito correttamente nalla matrice comandi");
+	}
+
+	private void aggiornaValoriComandi(Comando[][] matriceComandi, int i, int colore) {
+		boolean trovato = false;
+		String comando="";
+		for(int j=0; j< matriceComandi.length && !trovato; j++) {
+			// trovo un parametro con valore definito
+			if(matriceComandi[j][i]!=null && matriceComandi[j][i].getColore()==colore && matriceComandi[j][i].getValue().length()>0) {
+				trovato=true;
+				comando=matriceComandi[j][i].getValue();
+			}
+		}
+		if(trovato) {
+			for(int j=0; j<matriceComandi.length;j++) {
+				if( matriceComandi[j][i]!=null && matriceComandi[j][i].getColore()==colore)
+					matriceComandi[j][i].setValue(comando);
+			}
+		}
+		
 	}
 
 	public void setPixel(int x, int y, int col) {

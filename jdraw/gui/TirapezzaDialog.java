@@ -29,29 +29,29 @@ import util.gui.WidgetFactory;
  * @author Sanzari Raffaele 
  */
 
-public class GuidafiloDialog extends DrawDialog implements DocumentListener {
+public class TirapezzaDialog extends DrawDialog implements DocumentListener {
 
-	private static final int MAX_GUID = 8;
+	private static final int MAX_TIRAP = 20;
 	//private static final int MAX_HEIGHT = 768;
 
 	private Dimension dim = Tool.getPictureDimension();
 
-	private final JTextField guidafiloNUmber =new JTextField();
+	private final JTextField tirapezzaNUmber =new JTextField();
 
 //	private final JTextField heightField =
 //		new JTextField(String.valueOf(dim.height), 4);
 
-	public GuidafiloDialog() {
-		super("Inserisci numero guidafilo:");
+	public TirapezzaDialog() {
+		super("Inserisci numero tirapezza:");
 
-		WidgetFactory.addFocusAdapter(guidafiloNUmber);
+		WidgetFactory.addFocusAdapter(tirapezzaNUmber);
 //		WidgetFactory.addFocusAdapter(heightField);
 		setDefaultBorder();
 		setModal(true);
 		JPanel p = new JPanel(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
 
-		guidafiloNUmber.getDocument().addDocumentListener(this);
+		tirapezzaNUmber.getDocument().addDocumentListener(this);
 //		heightField.getDocument().addDocumentListener(this);
 
 		gc.gridx = 0;
@@ -59,17 +59,17 @@ public class GuidafiloDialog extends DrawDialog implements DocumentListener {
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.insets = new Insets(0, 2, 2, 2);
 		gc.gridwidth = 2;
-		JLabel text = new JLabel("<html><b>Seleziona Guidafilo:</b></html>");
+		JLabel text = new JLabel("<html><b>Seleziona Tirapezza:</b></html>");
 		text.setBorder(new EmptyBorder(0, 0, 10, 0));
 		p.add(text, gc);
 
 		gc.gridwidth = 1;
 		gc.gridy++;
-		JLabel l = new JLabel("Guidafilo: ");
+		JLabel l = new JLabel("Tirapezza: ");
 		p.add(l, gc);
 
 		gc.gridx++;
-		p.add(guidafiloNUmber, gc);
+		p.add(tirapezzaNUmber, gc);
 
 //		gc.gridx = 0;
 //		gc.gridy++;
@@ -87,20 +87,20 @@ public class GuidafiloDialog extends DrawDialog implements DocumentListener {
 		addRightButton(getCancelButton());
 		addButtonPanel();
 
-		setFirstFocusComponent(guidafiloNUmber);
+		setFirstFocusComponent(tirapezzaNUmber);
 	}
 
-	public String getGuidafilo() {
-		return guidafiloNUmber.getText();
+	public String getTirapezza() {
+		return tirapezzaNUmber.getText();
 	}
 
 	private void checkInput() {
 		boolean isValid = true;
 		try {
-			dim.width = Integer.parseInt(guidafiloNUmber.getText().trim());
+			dim.width = Integer.parseInt(tirapezzaNUmber.getText().trim());
 			//dim.height = Integer.parseInt(heightField.getText().trim());
 
-			isValid =(dim.width > 0)&& (dim.width < MAX_GUID);
+			isValid =(dim.width > 0)&& (dim.width < MAX_TIRAP);
 		}
 		catch (NumberFormatException e) {
 			isValid = false;

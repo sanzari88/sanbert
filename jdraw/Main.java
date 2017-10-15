@@ -30,7 +30,7 @@ import util.gui.FileBrowserUI;
 
 public final class Main {
 
-	private static final int SPLASH_DELAY = 1000;
+	private static final int SPLASH_DELAY = 2500;
 	static { // statische initialisierungen
 		SimpleLogListener listener = new SimpleLogListener(System.out);
 		Log.addLogListener(listener);
