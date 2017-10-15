@@ -9,6 +9,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -22,6 +25,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.apache.commons.io.FileUtils;
+
+import Inizio.Balza;
 import util.gui.WidgetFactory;
 
 /*
@@ -35,13 +41,19 @@ public class NewBalzaDialog extends DrawDialog implements DocumentListener {
 	private static final int MAX_WIDTH = 1024;
 	private static final int MAX_HEIGHT = 768;
 
-	String[] bookTitles = new String[] {"Costa 1x1", "Costa 2x1",
-            "Tubolare","Costa 1x1 + elastico", "Costa 2x1 + elastico"};
-	private final JComboBox costina =new JComboBox(bookTitles);
+	
+	private final JComboBox costina;
 
 
 	public NewBalzaDialog() {
 		super("Seleziona tipo balza:");
+		
+		String[] tipoCosta = new String[] {"Costa 1x1", "Costa 2x1",
+	            "Tubolare","Costa 1x1 + elastico", "Costa 2x1 + elastico"};
+		ArrayList<Balza> balze=readCostineFromFile();
+		
+		costina=new JComboBox(balze.toArray());
+		
 
 		WidgetFactory.addFocusAdapterJComboBox(costina);
 		setDefaultBorder();
@@ -87,8 +99,23 @@ public class NewBalzaDialog extends DrawDialog implements DocumentListener {
 		setFirstFocusComponent(costina);
 	}
 	
-	public String getCostina() {
-		String c=(String) costina.getSelectedItem();
+	private ArrayList<Balza> readCostineFromFile() {
+		
+		File folder = new File("Balze");
+		File[] listOfFiles = folder.listFiles();
+		
+		ArrayList<Balza> balze = new ArrayList<>();
+		
+		for (int i = 0; i < listOfFiles.length; i++) {
+			File file = listOfFiles[i];
+		    balze.add(new Balza(file.getName(),file));
+		}
+		return balze;
+		
+	}
+	
+	public Balza getCostina() {
+		Balza c=(Balza) costina.getSelectedItem();
 		return c;
 	}
 

@@ -1,7 +1,12 @@
 package jdraw.action;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
+import Inizio.Balza;
 import jdraw.gui.DrawDialog;
 import jdraw.gui.NewBalzaDialog;
 
@@ -19,9 +24,14 @@ import jdraw.gui.NewBalzaDialog;
 			d.open();
 			String costinaSelezionata;
 			if (d.getResult() == DrawDialog.APPROVE) {
-				costinaSelezionata=d.getCostina();
+				Balza b= d.getCostina();
+				costinaSelezionata=b.toString();
+				System.out.println(costinaSelezionata);
+				
 			}
 		}
+		
+		
 
 	}
 
