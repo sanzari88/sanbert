@@ -1,7 +1,13 @@
 package Comandi;
 
-public class Comando {
+import java.io.Serializable;
+
+public class Comando implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String comando;
 	private String value="";
 	private int colore;

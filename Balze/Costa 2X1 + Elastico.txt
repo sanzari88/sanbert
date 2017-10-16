@@ -1,0 +1,25 @@
+>> I= LA,[]R('x.') - LA,[]R('.x'), GF= 1, CM=GRAD20 TZT20 VEL20 SP>0+99, S2 ;
+RIPETI*MEM20          # Rimaglio
+<< I= LA,[]R('.x') - LA,[]R('x.'), GF= 1, S1 ;
+>> I= LA,[]R('x.') - LA,[]R('.x'), GF= 1, S2 ;
+ENDRIP;
+<< I= LA,[]R('.x') - LA,[]R('x.'), GF= 1, S1 ;
+>> I= LA,[], GF= 1, CM=GRAD19 TZT19 VEL19 SP>0, S2 ;
+<< I=  - LA,[] / TR,[]R('.x'), GF= 1/0, CM=SP>1, S1 S2 ;
+>> I= TR,[]R('x.') /  - LA,[], GF=0/ 1, CM=SP>1, S1 S2 ;
+<< I= LA,[]R('x.') - LA,[] / LA,[]R('x.') - IN,[], GF= 1/ 0, CM=SP>0, S1 S2 ;
+>> I= LA,[] /  - TR,[]R('.x.'), GF= 0/0, CM=SP>1, S1 S2 ;
+<< I= TR,[]R('.x.') - RC,[]R('x..') / LA,[]R('.x.'), GF=0/ 0, CM=SP<1, S1 S2 ;
+>> I= LA,[]R('.x.') - LA,[]R('x.x'), GF= 1, CM=SP>0, S2 ;
+<< I=  - LA,[]R('x.x') / LA,[] - LA,[]R('.x.'), GF= 1GHBASE/ 0, CM=SP>0, S1 S2 ;
+# Costa 2x1
+>> I= LA,[]R('.xx') - LA,[]R('x.x') /  - LA,[]R('x.x'), GF= 4/ 7, CM=GRAD1 SP<2, S1 S2 ;
+<< I= LA,[]R('.xx') /  - LA,[]R('x.x'), GF= 4/ 7GHBASE, CM=GRAD2, S1 S2 ;
+>> I= LA,[]R('.xx'), GF= 4, S2 ;
+<< I= LA,[]R('.xx') - LA,[]R('x.x'), GF= 4, CM=GRAD3 TZT4 VEL4 SP>0, S1 ;
+RIPETI*MEM1          # Costa 2x1
+>> I= LA,[]R('.xx') - LA,[]R('x.x'), GF= 4, S2 ;
+<< I= LA,[]R('.xx') - LA,[]R('x.x'), GF= 4, S1 ;
+ENDRIP;
+>> I= LA,[]R('.xx') - LA,[]R('x.x'), GF= 4, S2 ;
+<< I= LA,[]R('.xx') - LA,[]R('x.x'), GF= 4, CM=GRAD4 SP>0, S1 ;

@@ -44,13 +44,13 @@ public final class LoadAction extends BlockingDrawAction {
 				 KeyStroke.getKeyStroke(new Character('O'), KeyEvent.CTRL_MASK)});
 	}
 
-	public static boolean isJDraw(String f) {
+	public static boolean isAtrs(String f) {
 		int index = f.lastIndexOf('.');
 		if (index == -1) {
 			return false;
 		}
 		String extension = f.substring(index);
-		return extension.equalsIgnoreCase(".jd");
+		return extension.equalsIgnoreCase(".atrs");
 	}
 
 	public static boolean isICO(String f) {
@@ -90,12 +90,13 @@ public final class LoadAction extends BlockingDrawAction {
 		return false;
 	}
 
-	private Picture readJDraw(String fileName) {
+	private Picture readAtrs(String fileName) {
 		ObjectInputStream in = null;
 		try {
 			in = new ObjectInputStream(new FileInputStream(fileName));
 			SaveProgram programmaSalvato= (SaveProgram) in.readObject();;
-			Clip.setMatriceMaglie(programmaSalvato.getC());
+			Clip.setMatriceMaglie(programmaSalvato.getMatriceMaglia());
+			Clip.setMatriceComandi(programmaSalvato.getMatrComandi());
 			return programmaSalvato.getP();
 		}
 		catch (Exception e) {
@@ -120,8 +121,8 @@ public final class LoadAction extends BlockingDrawAction {
 //			}
 //		}
 //		else 
-			if (isJDraw(newFileName)) {
-			picture = readJDraw(newFileName);
+			if (isAtrs(newFileName)) {
+			picture = readAtrs(newFileName);
 		}
 //		else if (isICO(newFileName)) {
 //			picture = IconReader.readIcon(newFileName);

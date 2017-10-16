@@ -30,26 +30,40 @@ public class GestoreCadute {
 	}
 
 	public ArrayList<Caduta> elaborazioneFinale(ArrayList<LavoroCaduta> righeLavoro,
-			ArrayList<TrasportoCaduta> righeTrasporto) {
+			ArrayList<TrasportoCaduta> righeTrasporto,boolean balza) {
 		Caduta c;
 		ArrayList<Caduta> lavoro = new ArrayList<>();
 		HashMap mapTrasporti = getHashFromList(righeTrasporto);
-		for (LavoroCaduta l : righeLavoro) {
+		int i=0;
+		if(balza) {
+			i=1;
 			c = new Caduta();
-			c.setLavoroA(l.getAnteriore());
-			c.setLavoroP(l.getPosteriore());
-			c.setRigaDisegno(l.getRigaDisegno());
+			TrasportoCaduta tr = (TrasportoCaduta) mapTrasporti.get(righeLavoro.get(0).getRigaDisegno());
+			c.setTrasportoAD(tr.getAvantiDietro());
+			c.setTrasportoDA(tr.getDietroAvanti());
+			c.setPosizione(1);
+			c.setTrasporto(true);
+			lavoro.add(c);
+			System.out.println("Ho gestito un in automatico il trasporto per balza");
+		}
+		
+		//for (LavoroCaduta l : righeLavoro) {
+		for(;i<righeLavoro.size();i++) {
+			c = new Caduta();
+			c.setLavoroA(righeLavoro.get(i).getAnteriore());
+			c.setLavoroP(righeLavoro.get(i).getPosteriore());
+			c.setRigaDisegno(righeLavoro.get(i).getRigaDisegno());
 			c.setTrasporto(false);
-			c.setGradazione(l.getGradazione());
-			c.setGuidafilo(l.getGuidafilo());
-			c.setVelocita(l.getVelocita());
-			c.setTirapezza(l.getTirapezza());
+			c.setGradazione(righeLavoro.get(i).getGradazione());
+			c.setGuidafilo(righeLavoro.get(i).getGuidafilo());
+			c.setVelocita(righeLavoro.get(i).getVelocita());
+			c.setTirapezza(righeLavoro.get(i).getTirapezza());
 			lavoro.add(c);
 			// verifico se vanno fatti dei trasporti
-			if (mapTrasporti.containsKey(l.getRigaDisegno())) { // verificare override
+			if (mapTrasporti.containsKey(righeLavoro.get(i).getRigaDisegno())) { // verificare override
 				System.out.println("Ho gestito un trasporto in automatico");
 				c = new Caduta();
-				TrasportoCaduta tr = (TrasportoCaduta) mapTrasporti.get(l.getRigaDisegno());
+				TrasportoCaduta tr = (TrasportoCaduta) mapTrasporti.get(righeLavoro.get(i).getRigaDisegno());
 				c.setTrasportoAD(tr.getAvantiDietro());
 				c.setTrasportoDA(tr.getDietroAvanti());
 				c.setPosizione(1);
@@ -157,7 +171,7 @@ public class GestoreCadute {
 			aD="TR, [] ("+c.getTrasportoAD()+")";
 		}
 		if(c.getTrasportoDA().length()>0) {
-			dA=" /TR, [] ("+c.getTrasportoDA()+")";
+			dA=" - TR, [] ("+c.getTrasportoDA()+")";
 		}
 		
 		String comando=">> I= "+aD+dA+ ", CM= TPZ"+ c.getTirapezza() + " VEL" + c.getVelocita() + " SP>0, S1;";
@@ -171,7 +185,7 @@ public class GestoreCadute {
 			aD="TR, [] ("+c.getTrasportoAD()+")";
 		}
 		if(c.getTrasportoDA().length()>0) {
-			dA=" /TR, [] ("+c.getTrasportoDA()+")";
+			dA=" - TR, [] ("+c.getTrasportoDA()+")";
 		}
 		
 		String comando="<< I= "+aD+dA+ ", CM= TPZ"+ c.getTirapezza() + " VEL" + c.getVelocita() + " SP>0, S1;";
@@ -182,10 +196,10 @@ public class GestoreCadute {
 		String a = "";
 		String p = "";
 		if (c.getLavoroA().length() > 0)
-			a = "LA,[" + c.getLavoroA() + "]";
+			a = "LA,[](" + c.getLavoroA() + ")";
 
 		if (c.getLavoroP().length() > 0)
-			p = " / LA,[" + c.getLavoroP() + "], ";
+			p = " - LA,[](" + c.getLavoroP() + "), ";
 
 		String comando = ">> I= " + a + p + "GF=" + c.getGuidafilo() + ", CM= GRAD" + c.getGradazione() + " TPZ"
 				+ c.getTirapezza() + " VEL" + c.getVelocita() + " SP>0, S1;";
@@ -196,10 +210,10 @@ public class GestoreCadute {
 		String a = "";
 		String p = "";
 		if (c.getLavoroA().length() > 0)
-			a = "LA,[" + c.getLavoroA() + "]";
+			a = "LA,[](" + c.getLavoroA() + ")";
 
 		if (c.getLavoroP().length() > 0)
-			p = " / LA,[" + c.getLavoroP() + "], ";
+			p = " - LA,[] (" + c.getLavoroP() + "), ";
 
 		String comando = "<< I= " + a + p + "GF=" + c.getGuidafilo() + ", CM= GRAD" + c.getGradazione() + " TPZ"
 				+ c.getTirapezza() + " VEL" + c.getVelocita() + " SP>0, S1;";

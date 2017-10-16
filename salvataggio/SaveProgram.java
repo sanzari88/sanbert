@@ -2,6 +2,7 @@ package salvataggio;
 
 import java.io.Serializable;
 
+import Comandi.Comando;
 import jdraw.data.Clip;
 import jdraw.data.Picture;
 import jdraw.gui.Tool;
@@ -13,11 +14,13 @@ public class SaveProgram implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Picture p;
-	private Maglia[][] c;
+	private Maglia[][] matrMaglia;
+	private Comando [][] matrComandi;
 	
-	public SaveProgram(Picture p, Maglia[][] c) {
+	public SaveProgram(Picture p, Maglia[][] matrMaglia,Comando [][] matrComandi) {
 		 this.p=p;
-		 this.c=c;
+		 this.matrMaglia=matrMaglia;
+		 this.matrComandi=matrComandi;
 	}
 
 	public Picture getP() {
@@ -28,13 +31,23 @@ public class SaveProgram implements Serializable{
 		this.p = p;
 	}
 
-	public Maglia[][] getC() {
-		return c;
+	public Maglia[][] getMatriceMaglia() {
+		return matrMaglia;
 	}
 
-	public void setC(Maglia[][] c) {
-		this.c = c;
+	public void setC(Maglia[][] matrMaglia) {
+		this.matrMaglia = matrMaglia;
 	}
+
+	public Comando[][] getMatrComandi() {
+		return matrComandi;
+	}
+
+	public void setMatrComandi(Comando[][] matrComandi) {
+		this.matrComandi = matrComandi;
+	}
+	
+	
 	
 	
 	

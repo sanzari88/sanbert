@@ -51,7 +51,7 @@ public final class SaveAction extends BlockingDrawAction {
 		ObjectOutputStream out = null;
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(aFileName));
-			SaveProgram save = new SaveProgram(Tool.getPicture(), Clip.getMatriceMaglia());
+			SaveProgram save = new SaveProgram(Tool.getPicture(), Clip.getMatriceMaglia(),Clip.getMatriceComandi());
 			//out.writeObject(Tool.getPicture());
 			out.writeObject(save);
 			return true;
@@ -81,7 +81,7 @@ public final class SaveAction extends BlockingDrawAction {
 //						saveInterlaced());
 //		}
 //		else 
-		if (LoadAction.isJDraw(fileName)) {
+		if (LoadAction.isAtrs(fileName)) {
 			success = saveJDraw(fileName);
 		}
 //		else if (LoadAction.isICO(fileName)) {

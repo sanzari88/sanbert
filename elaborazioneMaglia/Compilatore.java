@@ -2,11 +2,18 @@ package elaborazioneMaglia;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.io.FileUtils;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import Comandi.Comando;
+import Inizio.Balza;
+import jdraw.data.Clip.PUNTO_MAGLIA;
 import jdraw.data.Palette;
 import magliera.puntoMaglia.Maglia;
 import magliera.puntoMaglia.TipoLavoroEnum;
@@ -18,14 +25,16 @@ public class Compilatore {
 	private HashMap <Integer,String> tabellaColori;
 	private ArrayList<LavoroCaduta> righeLavoro;
 	private ArrayList<TrasportoCaduta> righeTrasporto;
+	private Balza balza;
 	
-	public Compilatore(Maglia[][] matriceMaglia,Comando[][] matriceComandi) {
+	public Compilatore(Maglia[][] matriceMaglia,Comando[][] matriceComandi,Balza balza) {
 		this.matriceMaglia= matriceMaglia;
 		this.matriceComandi=matriceComandi;
+		this.balza=balza;
 		tabellaColori = Palette.getTabellaColoriMaglia();
 		// capovolgendo la matrice ho il disegno in ordine di istruzioni partendo dal basso, quindi da 1
 		Maglia [][] matriceMaglieTmp = Utility.capovolgiMatrice(matriceMaglia);
-		elabora(matriceMaglieTmp,this.matriceComandi);
+		elabora(matriceMaglieTmp,this.matriceComandi,this.balza);
 	}
 	
 	public String getProgrammaElaborato() {
@@ -33,19 +42,27 @@ public class Compilatore {
 	}
 	
 	
-	private void elabora(Maglia[][] matriceMaglia,Comando[][] matriceComandi) {
+	private void elabora(Maglia[][] matriceMaglia,Comando[][] matriceComandi,Balza balza) {
 		
+		boolean balzaAttiva=false;
+		// da questo punto in poi l'elaborazione della matrice comandi deve avvenire dall'indice 0 -> maxRighe
+		if(balza != null) {
+			balzaAttiva=true;
+			matriceMaglia=aggiungiInizioBalza(matriceMaglia,balza);
+		}
+		// ritorna un array di oggetti LavoroCaduta con tutti i parametri necessari per ogni caduta (tipo di lavoro,gradazione,celoc,tirapezza,GF)
 		righeLavoro = creaComandiLavoro(matriceMaglia,matriceComandi);
 		System.out.println("Comandi lavoro creati");
 		
-		creaFileStruttura(getGuidafili(matriceComandi));
+		// stampo sulla console e sul file la struttura della matrice disegno
+		creaFileStruttura(getGuidafili(matriceComandi),matriceMaglia,balza);
 		System.out.println("File struttura creato");
 		
-		righeTrasporto = creaComandiTrasporti(matriceMaglia);
+		righeTrasporto = creaComandiTrasporti(matriceMaglia,balza);
 		System.out.println("Comandi trasporti creati");
 		
 		GestoreCadute gestore = new GestoreCadute();
-		ArrayList<Caduta> lavoro =gestore.elaborazioneFinale(righeLavoro,righeTrasporto);
+		ArrayList<Caduta> lavoro =gestore.elaborazioneFinale(righeLavoro,righeTrasporto,balzaAttiva);
 		System.out.println("Corse gestite correttamente");
 		
 		String comandiMacchina= gestore.trasformaComandiMacchina(lavoro);
@@ -53,6 +70,36 @@ public class Compilatore {
 		System.out.println("File comandi generato correttamente");
 	}
 	
+	private Maglia[][] aggiungiInizioBalza(Maglia[][] matriceMaglia, Balza balza) {
+			// se è presente una balza... verifico se devo far i traporti prima di iniziare il lavoro
+			ArrayList<Maglia>ultimaRigaBalza= new ArrayList<>();
+			int nr = matriceMaglia.length;
+			int nc = matriceMaglia[0].length;
+			
+			Maglia[][] matriceMagliaConBalza = new Maglia[nr+1][nc];
+			for(int i=0; i<nc;i++) {
+				Maglia m;
+				if(balza.toString().equalsIgnoreCase("Costa 1X1")) {
+				if(i%2==1)
+					m=new Maglia(i, 0, 1, TipoLavoroEnum.MagliaAnteriore.toString());
+				else
+					m=new Maglia(i, 0, 1, TipoLavoroEnum.MagliaPosteriore.toString());
+				ultimaRigaBalza.add(m);
+				}
+			}
+			
+			// aggiungo la prima riga per la gestione di eventuali trasporti della balza
+						ultimaRigaBalza.toArray(matriceMagliaConBalza[0]);
+						
+			for(int r=0;r<nr;r++)
+				for(int c=0;c<nc;c++) {
+					matriceMagliaConBalza[r+1][c]=matriceMaglia[r][c];
+				}
+			
+			
+		return matriceMagliaConBalza;
+	}
+
 	private ArrayList<Integer> getGuidafili(Comando[][] matriceComandi) {
 		ArrayList<Integer> guidafili= new ArrayList<>();
 		
@@ -77,23 +124,23 @@ public class Compilatore {
 		}
 	}
 
-	private ArrayList<TrasportoCaduta> creaComandiTrasporti(Maglia[][] matriceMaglia) {
+	private ArrayList<TrasportoCaduta> creaComandiTrasporti(Maglia[][] matriceMaglia,Balza balza) {
 		ArrayList<TrasportoCaduta> righeTrasporto = new ArrayList<>();
 		int nr = matriceMaglia.length-1;
 		int nc = matriceMaglia[0].length;
 		int righaDisegno=0;
 		TrasportoCaduta trasporto ;
 		
-		
-		
-		for(int r= 0 ;r< nr; r++) {	
+		for(int r=0;r< nr; r++) {	
 			String traspAD = "";
 			String traspDA = "";
 			String colore="";
 			
-			for(int c =0; c < nc; c++) { 
-				Maglia attuale = matriceMaglia[r][c];
-				Maglia rigaSccessiva = matriceMaglia[r+1][c];
+			for(int c =0; c < nc; c++) {
+				Maglia attuale = null;
+				Maglia rigaSccessiva = null;
+				 attuale = matriceMaglia[r][c];
+				 rigaSccessiva = matriceMaglia[r+1][c];
 				// Trasporta da avanti a dietro
 				if(attuale.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString()) &&
 						rigaSccessiva.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
@@ -128,15 +175,15 @@ public class Compilatore {
 		return righeTrasporto;
 	}
 
-	private boolean creaFileStruttura(ArrayList<Integer> guidafili) {
+	private boolean creaFileStruttura(ArrayList<Integer> guidafili,Maglia[][] matriceMaglia, Balza balza) {
 		File f = new File("Struttura.txt");
 		try {
 			PrintStream ps = new PrintStream(f);
 			ps.println("###########################################################################");
 			ps.println("#-------- Programma di generazione automatico by Raffaele Sanzari --------#");
-			ps.println("###########################################################################\n\n\n\n");
+			ps.println("###########################################################################\n\n");
 			
-			ps.println("#-------------------------Selezioni Aghi-----------------------------------#\n\n\n");
+			ps.println("#-------------------------Selezioni Aghi-----------------------------------#\n\n");
 			
 			
 			int nr = matriceMaglia.length-1;
@@ -145,7 +192,7 @@ public class Compilatore {
 			int indiceDisegno= nr;
 			
 			
-			for(int r=0 ;r<= nr; r++) {
+			for(int r=nr ;r>-1; r--) {
 				String indiceNormalizzato= Utility.normalizzaIndiceDisegno(indiceDisegno+1);
 				System.out.print(indiceNormalizzato+" = '");
 				ps.print(indiceNormalizzato+" = '");
@@ -173,7 +220,7 @@ public class Compilatore {
 			ps.println("TELO TELI = AGOIT1 - AGOFT1;");
 			ps.println("MOT MOTINIZIO = D0001 (D0001 - "+Utility.normalizzaIndiceDisegno(righeDisegno)+")");
 			ps.println("COINIZIO = MOTINIZIO;");
-			ps.println("FRINIZIO = MEM051 : MEM053 (TINIZIO 1'.');");
+			ps.println("FRINIZIO = MEM051 : MEM053 1 (TINIZIO 0'.');");
 			ps.println("#-----------------------------------------------------------------------------\n\n\n");
 			ps.println("#------ INIZIO GENERAZIONE PARAMETRI PER GUIDAFILO -----------\n");
 			String gtbase="";
@@ -199,6 +246,7 @@ public class Compilatore {
 			ps.println("#--------------------------------------------------------------------------------");
 			ps.println("#						SUBROUTINES");
 			ps.println("#--------------------------------------------------------------------------------");
+			insertSubroutineAvvio(ps,balza);
 			ps.println("#--------------------------------------------------------------------------------");
 			ps.println("#						ECONOMIZZATORI");
 			ps.println("#--------------------------------------------------------------------------------");
@@ -254,9 +302,83 @@ public class Compilatore {
 		return true;
 	}
 	
+	private void insertSubroutineAvvio(PrintStream ps, Balza balza) {
+		
+		if(balza!=null) {
+			gfPinze(ps);
+			ptSxCon(ps);
+			balzaNoPettine(ps,balza);
+			
+			
+		}
+		
+	}
+	
+	private void balzaNoPettine(PrintStream ps, Balza balza) {
+		
+		ps.println("#\n\n--------- Inizio Balza no-Pettine ---------#");
+		ps.println("SUB BALZA");
+		File f = balza.getF();
+		try {
+			String comando= FileUtils.readFileToString(f);
+			ps.println(comando);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ps.println("ENDSUB;");
+		
+	}
+
+	private void ptSxCon(PrintStream ps) {
+		
+		ps.println("\n\n#-------Avvio partenza da sinistra con pettine--------#");
+		ps.println("SUB PTSXCON");
+		ps.println("IF FINEPROG = 0\n" + 
+				"    SET MESSAGGIO = 1;\n" + 
+				"    SET STOPLATO = STOPLATO+2;\n" + 
+				"ATTIVA FRSCARICO;\n" + 
+				">> I= LA,[] - LA,[], GF= 0, CM=GRAD26 TZT26 VEL20 SP>0+99, S2 ;\n" + 
+				"<< I= LA,[] - LA,[], GF= 0, CM=TZT27 TPO, S2 ;\n" + 
+				">> I= LA,[] - LA,[], GF= 0, CM=TPO, S2 ;\n" + 
+				"<< I= LA,[] - LA,[], GF= 0, CM=TPO, S2 ;\n" + 
+				"ATTIVA FRINIZIO;\n" + 
+				">> I= LA,[] - LA,[] / LA,[]R('.x..') - LA,[]R('...x'), GF= 0/ 8, CM=GRAD21 TZT21 VEL20 SP>0, S1 S2 ;\n" + 
+				"<< I= LA,[]R('...x') - LA,[]R('.x..'), GF= 8, CM=SP>0, S1 ;\n" + 
+				">> I= LA,[]R('.x') - LA,[]R('x.') / LA,[](*), GF= 1/ 8(1), CM=GRAD22 TZT22 VEL20 SP>0 PTA, S1 S2 ;\n" + 
+				"<< I= LA,[](*) / LA,[]R('x.') - LA,[]R('.x'), GF= 8GHPINZ/ 1GHPINZ, S1 S2 ;\n" + 
+				"ENDIF;\n" + 
+				"IF FINEPROG = 1\n" + 
+				"    SET MESSAGGIO = 0;\n" + 
+				"    SET STOPLATO = 0;\n" + 
+				"ENDIF;\n" + 
+				"");
+		ps.println("ENDSUB;");
+		
+	}
+
+	private void gfPinze(PrintStream ps) {
+		ps.println("\n\nSUB GFPINZE");
+		ps.println("IF FINEPROG = 0");
+		ps.println("		SET MESSAGGIO = 2;");
+		ps.println("		SET STOP LATO = 4;");
+		ps.println("		ATTIVA GHPARK;");
+		ps.println(">> CM=GRAD26 TPZ26 VEL20 SP>0+99,S0");
+		ps.println("<< I=LA,[](*) / LA,[](*), GF=1AGHIPINZ / 4AGHIPINZ,S1 S1;");
+		ps.println(">> SO;");
+		ps.println("<< I=LA,[](*), GF= 8AGHPINZ, S1;");
+		ps.println("ATTIVA GHPINZ;");
+		ps.println("ENDIF;");
+		ps.println("IF FINEPROGR = 1");
+		ps.println("		SET MESSAGGIO = 0;");
+		ps.println("		SET STOPLATO = 0;");
+		ps.println("ENDIF;");
+		ps.println("ENDSUB;");
+	}
+	
 	private ArrayList<LavoroCaduta> creaComandiLavoro(Maglia[][] matriceMaglia,Comando[][] matriceComandi) {
 		ArrayList<LavoroCaduta> righeLavoro = new ArrayList<>();
-			int nr = matriceMaglia.length;
+			int nr = matriceMaglia.length-1;
 			
 			for(int i=0;i< nr; i++) {
 				LavoroCaduta lavoro =getMaglieLavoro(matriceMaglia[i], i,matriceComandi[i]);
@@ -284,6 +406,8 @@ public class Compilatore {
 		int gradazione=1;
 		int guidafilo=1;
 		
+		
+		// recupero i valori dei comanid dalle barra laterale per associarli alla stecca di disegno
 		for(Comando c:rigaComandi) {
 			if(c!=null && c.getComando().equalsIgnoreCase("Guidafilo")) {
 				guidafilo=Integer.parseInt(c.getValue());
@@ -298,9 +422,11 @@ public class Compilatore {
 				tirapezza=Integer.parseInt(c.getValue());
 			}
 		}
+		
+		
 		ArrayList<Colore> colori = new ArrayList<>();
 		LavoroCaduta lavoro = new LavoroCaduta();
-		
+		//recupero tutti i colori utilizzati in quella riga di disegno
 		for(Maglia m: rigaMatriceMaglia) {
 			if(!colore.contains(getLetteraColoreFromMaglia(m.getColore()))) {
 				colore= colore + getLetteraColoreFromMaglia(m.getColore());
@@ -309,7 +435,7 @@ public class Compilatore {
 		}
 			
 			for(String col : colors) {
-				// scorro la riga per ogni colore
+				// scorro la riga per ogni colore; Per ogni colore verifico che tipo di lavoro devo fare
 				Colore c = new Colore();
 				c.setColore(col);
 				for(Maglia m1: rigaMatriceMaglia) {
@@ -341,7 +467,7 @@ public class Compilatore {
 			}
 			
 			for(Colore col: colori) {
-				// per ogni colore verifico se devo riealborare le maglie
+				// per ogni colore verifico se devo riealborare le maglie; rielaboro se con lo stesso colore devo lavorare sia avanti che dietro
 				if(!col.isMaglieUgualiColore()) {
 					riealoboraColoriAndMaglie(colors,col.getAnteriore());
 					riealoboraColoriAndMaglie(colors,col.getPosteriore());

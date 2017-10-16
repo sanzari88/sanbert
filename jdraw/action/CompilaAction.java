@@ -24,7 +24,7 @@ public class CompilaAction extends DrawAction{
 
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("Avvio compilazione");
-		Compilatore c = new Compilatore(Clip.getMatriceMaglia(),Clip.getMatriceComandi());
+		Compilatore c = new Compilatore(Clip.getMatriceMaglia(),Clip.getMatriceComandi(),Clip.getBalza());
 		
 	}
 

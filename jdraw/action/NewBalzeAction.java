@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import Inizio.Balza;
+import jdraw.data.Clip;
 import jdraw.gui.DrawDialog;
 import jdraw.gui.NewBalzaDialog;
 
@@ -25,6 +26,7 @@ import jdraw.gui.NewBalzaDialog;
 			String costinaSelezionata;
 			if (d.getResult() == DrawDialog.APPROVE) {
 				Balza b= d.getCostina();
+				Clip.setBalza(b);
 				costinaSelezionata=b.toString();
 				System.out.println(costinaSelezionata);
 				

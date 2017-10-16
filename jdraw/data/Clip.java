@@ -6,6 +6,7 @@ import java.util.Arrays;
 import javax.tools.Tool;
 
 import Comandi.Comando;
+import Inizio.Balza;
 import jdraw.data.event.ChangeEvent;
 import jdraw.gui.DrawPanel;
 import jdraw.gui.FolderPanel;
@@ -37,6 +38,8 @@ public class Clip extends DataObject {
 	protected static Maglia [][] matriceMaglie;
 	
 	protected static Comando [][] matriceComandi;
+	
+	protected static Balza balza;
 
 
 	public Clip(final int width, final int height, int background) {
@@ -262,6 +265,15 @@ public class Clip extends DataObject {
 	public static int getLarghezzaDisegno() {
 		return matriceMaglie.length;
 	}
+
+	public static Balza getBalza() {
+		return balza;
+	}
+
+	public static void setBalza(Balza balza) {
+		Clip.balza = balza;
+	}
+	
 	
 	
 	
