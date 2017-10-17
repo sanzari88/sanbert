@@ -407,7 +407,7 @@ public class Compilatore {
 		int guidafilo=1;
 		
 		
-		// recupero i valori dei comanid dalle barra laterale per associarli alla stecca di disegno
+		// recupero i valori dei comandi dalle barra laterale per associarli alla stecca di disegno
 		for(Comando c:rigaComandi) {
 			if(c!=null && c.getComando().equalsIgnoreCase("Guidafilo")) {
 				guidafilo=Integer.parseInt(c.getValue());
