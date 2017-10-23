@@ -6,6 +6,7 @@ public enum TipoLavoroEnum {
 	MagliaPosteriore,
 	MagliaIngleseAnteriore,
 	MagliaInglesePosteriore,
-	MagliaUnita
+	MagliaUnita,
+	No_Lavoro
 
 }

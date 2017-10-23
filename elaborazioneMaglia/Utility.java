@@ -3,6 +3,7 @@ package elaborazioneMaglia;
 import java.util.ArrayList;
 
 import magliera.puntoMaglia.Maglia;
+import util.Util;
 
 public class Utility {
 	
@@ -60,6 +61,45 @@ public class Utility {
 		}
 		
 		return newcolor;
+	}
+	
+	public static ArrayList<Integer> getNextFreeXColor(ArrayList<String> colors,int numeroNuoviColori) {
+		ArrayList<Integer> nuoviColori= new ArrayList<>(); 
+		for(int i= 65;(i<90 && (nuoviColori.size()!=numeroNuoviColori)); i++) {
+			String newcolore= Character.toString((char)i);
+			if(!colors.contains(newcolore)) {
+				nuoviColori.add(i);
+			}
+		}
+		
+		return nuoviColori;
+	}
+	
+	public static String getASCIfromNumber(int x) {
+		return Character.toString((char) x);
+	}
+	
+	public static boolean checkContainsColors(ArrayList<String> colors, String color) {
+		
+		for(String s:colors) {
+			if(s.equalsIgnoreCase(color))
+				return false;
+		}
+		
+		return true;
+	}
+
+
+	public static Maglia getMagliaAtIndex(ArrayList<Maglia> maglieAnteriori, ArrayList<Maglia> magliePosteriori, int index) {
+			
+			for(Maglia m:maglieAnteriori)
+				if(m.getX()==index)
+					return m;
+			for(Maglia m:magliePosteriori)
+				if(m.getX()==index)
+					return m;
+			
+		return null;
 	}
 
 }

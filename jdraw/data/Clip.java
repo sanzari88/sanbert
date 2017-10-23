@@ -143,28 +143,28 @@ public class Clip extends DataObject {
 		// con X = 0 non avrò mai nulla...è il separatore
 		
 		switch (x) {
-		case 1:{
+		case Comando.GUIDAFILO:{
 			//Guidafilo
 			c.setComando("Guidafilo");
 			c.setColore(colore);
 		}
 			break;
-		case 2:{
+		case Comando.GRADAZIONE:{
 			c.setComando("Gradazione");
 			c.setColore(colore);
-			comando=2;
+			comando=Comando.GRADAZIONE;
 		}
 			break;
-		case 3:{
+		case Comando.TIRAPEZZA:{
 			c.setComando("Tirapezza");
 			c.setColore(colore);
-			comando=3;
+			comando=Comando.TIRAPEZZA;
 		}
 			break;
-		case 4:{
+		case Comando.VELOCITA:{
 			c.setComando("Velocita");
 			c.setColore(colore);
-			comando=4;
+			comando=Comando.VELOCITA;
 		}
 			break;
 

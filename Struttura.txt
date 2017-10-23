@@ -6,6 +6,7 @@
 #-------------------------Selezioni Aghi-----------------------------------#
 
 
+D0012 = 'aaaaaaaaaa';
 D0011 = 'aaaaaaaaaa';
 D0010 = 'aaaaaaaaaa';
 D0009 = 'aaaaaaaaaa';
@@ -14,9 +15,9 @@ D0007 = 'aaaaaaaaaa';
 D0006 = 'aaaaaaaaaa';
 D0005 = 'aaaaaaaaaa';
 D0004 = 'aaaaaaaaaa';
-D0003 = 'ABBBBBBBAA';
-D0002 = 'AAAAAAABBA';
-D0001 = 'BABABABABA';
+D0003 = '..AAAAA...';
+D0002 = 'aaAAAAAaaa';
+D0001 = 'a..b.b..a.';
 #------------------------- FINE  Selezioni Aghi-----------------------------#
 
 
@@ -28,7 +29,7 @@ D0001 = 'BABABABABA';
 
 
 TELO TELI = AGOIT1 - AGOFT1;
-MOT MOTINIZIO = D0001 (D0001 - D0011)
+MOT MOTINIZIO = D0001 (D0001 - D0012)
 COINIZIO = MOTINIZIO;
 FRINIZIO = MEM051 : MEM053 1 (TINIZIO 0'.');
 #-----------------------------------------------------------------------------
@@ -37,12 +38,12 @@ FRINIZIO = MEM051 : MEM053 1 (TINIZIO 0'.');
 
 #------ INIZIO GENERAZIONE PARAMETRI PER GUIDAFILO -----------
 
-GTBASE =1A N TELI1;
-GHBASE =1A+HGF1A;
-GHPARK =1A+PGF1A;
-GXBASE =1A [MEM301-MEM311];
-GHPINZ =1A+HPGF1A;
-GHPKPZ =1A+PPGF1A;
+GTBASE =3A N TELI1, 1A N TELI1;
+GHBASE =3A+HGF3A, 1A+HGF1A;
+GHPARK =3A+PGF3A, 1A+PGF1A;
+GXBASE =3A [MEM303-MEM313], 1A [MEM301-MEM311];
+GHPINZ =3A+HPGF3A, 1A+HPGF1A;
+GHPKPZ =3A+PPGF3A, 1A+PPGF1A;
 #--------------------------------------------------------------------------------
 #						SUBROUTINES
 #--------------------------------------------------------------------------------
@@ -142,6 +143,14 @@ SET DISTPIN = 9 * FINEZZA;
 SET PASSPIN = 110 * FINEZZA;
 SET PASSPIN = PASSPIN / 254;
 #--------    GESTIONE EZTRACORSA GUIDAFILO	-------
+SET HGF3A = AGOIT1 - MEM303;
+SET PGF3A = AGOFT1 - MEM313;
+SET HPGF3A = PASSPIN * 0;
+SET HPGF3A = DISTPIN + HPGF3A;
+SET HPGF3A = 0 - HPGF3A;
+SET PPGF3A = PASSPIN * 0;
+SET PPGF3A = DISTPIN + PPGF3A;
+SET PPGF3A =  AGHIMAC + PPGF3A;
 SET HGF1A = AGOIT1 - MEM301;
 SET PGF1A = AGOFT1 - MEM311;
 SET HPGF1A = PASSPIN * 0;

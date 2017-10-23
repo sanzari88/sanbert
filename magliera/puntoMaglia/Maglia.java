@@ -19,6 +19,8 @@ public class Maglia implements Serializable{
 	
 	private String tipoLavoro;
 	
+	public Maglia() {}
+	
 	
 	public Maglia(int x,int y, int colore, String tipoLavoro) {
 		this.x = x;

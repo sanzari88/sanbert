@@ -1,5 +1,11 @@
 package elaborazioneMaglia;
 
+import java.util.ArrayList;
+
+import Comandi.Comando;
+import magliera.puntoMaglia.Maglia;
+import magliera.puntoMaglia.TipoLavoroEnum;
+
 public class LavoroCaduta {
 	
 	private int caduta;
@@ -19,7 +25,17 @@ public class LavoroCaduta {
 	
 	private int rigaDisegno;
 	
-	public LavoroCaduta() {}
+	private boolean trasportoSempliceAggiunto=false;
+	
+	private ArrayList<Maglia> maglie;
+	private ArrayList<Comando> comandi;
+	
+	public LavoroCaduta() {
+		anteriore="";
+		posteriore="";
+		maglie = new ArrayList<>();
+		comandi = new ArrayList<>();
+	}
 
 	public int getCaduta() {
 		return caduta;
@@ -116,6 +132,85 @@ public class LavoroCaduta {
 	public void setUnita(String unita) {
 		this.unita = unita;
 	}
+
+	public boolean isTrasportoSempliceAggiunto() {
+		return trasportoSempliceAggiunto;
+	}
+
+	public void setTrasportoSempliceAggiunto(boolean trasportoSempliceAggiunto) {
+		this.trasportoSempliceAggiunto = trasportoSempliceAggiunto;
+	}
+	
+	public void addMaglie(Maglia[] maglietoAdd) {
+		for(int i=0;i<maglietoAdd.length;i++) {
+			maglie.add(maglietoAdd[i]);
+		}
+	}
+	
+	public void addMaglieAndSepara(Maglia[] maglietoAdd) {
+		for(int i=0;i<maglietoAdd.length;i++) {
+			maglie.add(maglietoAdd[i]);
+			
+			Maglia m=maglietoAdd[i];
+			String colore;
+			if(m.getNewColor()==0) {
+				colore=Compilatore.getLetteraColoreFromMaglia(m.getColore());
+			}else {
+				colore=Utility.getASCIfromNumber(m.getNewColor());
+			}
+			
+			if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaAnteriore.toString())) {
+				if(!this.anteriore.contains(colore))
+					this.anteriore=this.anteriore+colore;
+			}
+			else if(m.getTipoLavoro().equalsIgnoreCase(TipoLavoroEnum.MagliaPosteriore.toString())) {
+				if(!this.posteriore.contains(colore))
+					this.posteriore=this.posteriore+colore;
+			}
+			
+		}
+	}
+	
+	public void addComandi(Comando[] comanditoAdd) {
+		for(int i=1;i<comanditoAdd.length;i++) {
+			comandi.add(comanditoAdd[i]);
+			switch (i) {
+			case Comando.GRADAZIONE:
+				this.gradazione=Integer.parseInt(comanditoAdd[i].getValue());
+				break;
+			case Comando.TIRAPEZZA:
+				this.tirapezza=Integer.parseInt(comanditoAdd[i].getValue());
+				break;
+			case Comando.VELOCITA:
+				this.velocita=Integer.parseInt(comanditoAdd[i].getValue());
+				break;
+			case Comando.GUIDAFILO:
+				this.guidafilo=Integer.parseInt(comanditoAdd[i].getValue());
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
+	public ArrayList<Maglia> getMaglie() {
+		return maglie;
+	}
+
+	public void setMaglie(ArrayList<Maglia> maglie) {
+		this.maglie = maglie;
+	}
+
+	public ArrayList<Comando> getComandi() {
+		return comandi;
+	}
+
+	public void setComandi(ArrayList<Comando> comandi) {
+		this.comandi = comandi;
+	}
+	
+	
 	
 	
 	
